@@ -1,0 +1,150 @@
+
+rbac---------目前不考虑oauth2，要是统一登陆的时候再使用它，也是通过cookie的方式实现的---------
+1.user 【id,account,name, phone,cellphone,fax, email, address,desc,post_id】
+2.role [id,role_id, name] 包含行为的同时和权限关联
+3.post [id,name]
+4.authority [id,name,post_id,is_in_menu,parent_id,uri]--这个初始化后不能进行二次操作，只可以进行选择
+5.user_role [id,user_id,role_id]
+6.role_authority[id,role_id,authority_id]
+7.user_shortcut_authority[id,user_id,authority_id]，用户的快捷处理
+
+basic info------------------------
+// product
+1.product_category[id,name,parent_id]
+2.product[id,name,cost_price,sale_price,desc,lower_limit[库存下限],is_combination[当是组合时，需要考虑其组合价],unit,Spec,weight,color,volume,additional_info(一些特殊的属性组成的json)]
+3.product_picture[id,name,picture_url,is_primary]
+4.product_price_history[价格调整是，将历史记录写入][id,cost_price,sell_price,end_date]
+5.product_product_category[id,product_id,category_id,is_primary_category]
+
+// store 需要初始化一个主库
+1. store [id,name,desc,volume,is_primary,additional_info]
+2. store_position[id,name,desc]
+// 供货商
+1. supplier [id,name,desc,contact_name, contact_post, phone,cellphone,fax,email,is_primary,additional_info]
+// 客户，给出一个零售默认客户，展示的时候，列表，名片
+1. client [id,name,desc,contact_name,post, phone,cellphone,fax,email,is_primary,additional_info]
+// 业务员 employee
+1. employee [id,name,desc,post, phone,email,cellphone,fax,additional_info]
+2. store_employee [id,store_id,employee_id]
+// 赊账池，credit_pool,每年度也可以做一个汇总和统计,可以对一个单据有部分赊账的情况
+1. credit_pool[id,amount,order_number,type(0-入库购买赊账，1-入库退货欠款，2-出库欠款，4-出库退货赊账)，related_supplier_id,related_client_id]
+
+
+system info--------------------------
+
+1.enterprise_info [id,name,desc,legal_person, contact_name, phone,email,contact_post,website,fax,cellphone,additional_info]
+2.system_info [id,automatic_product_number, cost_price_strategy[0-自动，1-最近，2-平均],sale_price_floating[产品上浮百分比]，dump_backup_rate[一天一次，一周一次，两周一次，一月一次，只手动备份] ,expiry_alert]
+3.sale_strategy[id,name,begind_date,end_date,discount,lower_amount_limit,full_cut] 先满减后打折，或者只有其一
+
+
+system maintain------------------------
+1. 系统初始化【一次】，搭建完数据库后，给出一个默认零售商，给出一个，同时给出合适的数据库树状目录，给出初始职位，角色，权限等，然后刷新页面
+2. 备份数据库【日常】，手动备份，恢复数据库
+4. 报表设计【样式，表格的样式】，在选取时，给出图片展示
+
+
+
+到采购部分了---------
+
+purchase---status[0-申请采购， 1-同意采购， 2-采购入库申请，3-采购核审盘点， 4-入库以及修改库位]--------------------------------
+1.purchase_application(采购申请)[id,title,date,apply_user,desc（说明以及要求）,estimate_cost_price,supplier_id,status(0-未处理，1-已处理)]
+2.purchase_application_product(采购申请商品表)(id,purchase_application_id,product_id,number,price[申请时的成本价])
+3.采购单打印等
+4.当入库时，编写采购入库单（status 0-处理中,1-完成,2-拒绝（这种情况下，是人工考虑并进行处理，拒绝后是没有入库的产品和金额处理的）），同时将purchase_application(采购申请)状态写为完成 purchase_loading(采购入库)【id,purchase_application_id,date,apply_user,loading_user,desc（说明以及要求）,purchase_application_id,supplier_id,cost_price,original_order_number】
+5.purchase_loading_picture(采购入库拍照，原始单据照片，货物照片等)[id,purchase_loading_id,url]
+6.purchase_loading_product(入库商品表)(id,purchase_loading_id,product_id,number,cost_price[实际购买成本价],expiry_time[过期时间],store_id,store_position_id)
+7.审核操作（）
+8.入库操作，向库存表里面添加或者修改数据[更改入库申请单状态],判断是否赊账，并关联赊账池，赊账是有部分赊账的情况
+
+purchase return status[退货申请，退货审核，退货出库]-----------------------------------------------
+1.purchase_return_application(采购退货申请)[id,title,date,apply_user,desc（说明以及要求）,supplier_id,cost_price,purchase_loading_id,status(0-未处理，1-已处理)]
+2.purchase__return_application_product(采购退货申请商品表)(id,purchase_return_application_id,product_id,number,price[申请时的成本价],expiry_time,store_id,store_position_id)
+3.填写时，将purchase_return_application(采购退货申请)更改为已处理，
+4.purchase_return_audit(采购退货审核表)[id,title,date,apply_user,audit_user,desc（说明以及要求）,supplier_id,cost_price,purchase_return_application_id，purchase_loading_id,status(0-处理中，1-完成退货退款，2-废止) 此时将货物从调出库数据调整，当拒绝退货时，再将数据加回] 此时那些关联产品不会再卖
+5.purchase__return_audit_product(采购退货审核商品表)(id,purchase_return_application_id,purchase_loading_id,product_id,number,price[申请时的成本价],expiry_time,store_id,store_position_id)
+6.确认退货出库【商品数量进行更改，申请单状态更改，同时确认是否赊账，赊账的话，写入赊账池】或废除退货申请，更改采购审核表状态为未通过
+7.purchase_return_audit_picture(退货出库拍照，原始单据照片，货物照片等)[id,purchase_return_audit_id,url]
+
+purchase account---------采购账务------------------------
+1. 往来账务【供货商所有单据、供货商供货情况表、关联货品出货情况、供货商帐务】，根据以上的录入，进行purchase_loading_application和purchase_return_audit的查询，以及对供货商的筛选
+2. 进货单据查询，根据purchase_loading_application，进行查询，同时记得有相关状态的查询
+
+store-----------------------------------------------------
+1. store_product[id,product_id,store_id,store_position_id,number,expiry_time]
+2. allocation_application【申请调库单（status 0-处理中 1-完成） ，打印申请调库单】[id,title,date,apply_user,desc（说明以及要求）,out_store_id,in_store_id,status(0-未处理，1-已处理)]
+3. allocation_application_product (id,allocation_application_id,product_id,number,expiry_time,out_store_position_id)
+4. allocation_audit【调库审核 status 0-处理中，1-调库完成，2-拒绝调库，此时将货物从调出库数据调整，当拒绝调库时，再将数据加回】[id,title,allocation_application_id,date,audit_user,desc（说明以及要求）,out_store_id,in_store_id,status(0-处理中，1-调库完成，2-拒绝调库)]
+5. allocation_audit_product(id,allocation_audit_id,apply_user,audit_user,product_id,number,expiry_time,out_store_position_id,in_store_position_id)
+6. 调库操作，拒绝调库，调库完成，进行store_product的数据更新操作，当数据为0时，将产品抹去
+7. store_alert(当商品有出入库时，才进行product进行检视，并进行处理，将alert消除或者新增，同时当系统设置有过期预警时，每一天遍历一下商品给出一个月即将过期的商品预警)[id,product_id,store_id,store_position_id,remaining_time剩余时间,remaining_number]
+8. store_check 【库存盘点】【id,title,date,store_id,check_user】
+9. store_check_product[id,store_check_id,product_id,expiry_time,store_position_id,num,status[0-正常，1-溢，2-损]]
+
+//拆分和合并时根据过期时间和产品位置自动推荐出放置产品的地方并写入，当然管理员也可以自行选择
+只需要给出拆分记录即可，不需要单据
+
+// 新建拆分单，打印拆分单，拆分完成（处理产品个数，拆分过程中，只减原始产品，不增拆分产品，作废的话，还原，完成的话进行增减）
+10。store_product_split 产品拆分，这个是个操作，拆分单[status（0-处理中，1完成，2作废）id,product_id,split_user,store_id,store_position_id,num,expiry_time]
+11. store_product_split_sub_product,拆分的产品[id,store_product_split_id,product_id,num,expiry_time,store_id,store_position_id]
+
+// 新建合并单，打印合并单，合并完成（处理产品个数，合并过程中，只减原始产品，不增合并产品，作废的话，还原，完成的话进行增减）
+10。store_product_bind 产品合并，这个是个操作，合并单[status（0-处理中，1完成，2作废）id,bind_user,product_id,store_id,store_position_id,num,expiry_time]
+11. store_product_bind_sub_product,需要组合的产品[id,store_product_bind_id,product_id,num,expiry_time,store_id,store_position_id]
+
+sell---------------------------------------------------------------------------------------
+
+sell---status[0-申请售出，2-售出审核， 4-出售完成]--------------------------------
+1.sell_application(销售申请)[id,title,date,apply_user,desc（说明以及要求）,estimate_sell_price（合同销售价--这个价格是计算过的）,client_id,status(0-未处理，1-已处理)]
+2.sell_application_product(销售申请商品表)(id,sell_application_id,product_id,number,sell_price)
+3.销售单打印等
+4.审核通过并填写出库单，此时锁定要出库的商品部分，同时将sell_application(采购申请)状态写为完成，填写出库单的时候可以进行临时的保存操作，标明正在处理中，当删除时记得将锁定的商品数目还原 sell_library(销售出库)【id,sell_application_id,date,apply_user,library_user,desc（说明以及要求）,sell_application_id,client_id,sell_price【这个价格为溢出或者折扣价均摊到每个单位上的价格】,discount_price,original_order_number】
+5.sell_library_picture(销售出库拍照，原始单据照片，货物照片等)[id,sell_library_id,url]
+6.sell_library_product(销售出库商品表)(id,sell_library_id,product_id,number,sell_price,expiry_time[过期时间],store_id,store_position_id)
+8.出库，向库存表里面添加或者修改数据[更改出库单状态为完成],判断是否赊账，并关联赊账池
+
+sell return status[退货申请，退货审核，退货出库]-----------------------------------------------
+1.sell_return_application(销售退货申请)[id,title,date,apply_user,desc（说明以及要求）,client_id,sell_price,sell_library_id,status(0-未处理，1-已处理)]
+2.sell_return_application_product(销售退货申请商品表)(id,purchase_return_application_id,product_id,number,sell_price[售出时的销售价],expiry_time,store_id,store_position_id)
+3.填写时，将purchase_return_application(销售退货申请)更改为已处理，
+4.sell_return_audit(采购退货审核表)[id,title,date,apply_user,desc（说明以及要求）,client_id,sell_library_id,sell_return_application_id,status(0-处理中，1-完成退货退款，2-废止) 审核是对出库产品进行审核] 
+5.sell_return_audit_product(采购退货审核商品表)(id,sell_return_application_id,product_id,number,expiry_time,store_id,store_position_id)
+6.确认退货出库【商品数量进行更改，申请单状态更改，同时确认是否赊账，赊账的话，写入赊账池】或废除退货申请，更改销售审核表状态为未通过
+7.sell_return_audit_picture(退货入库拍照，原始单据照片，货物照片等)[id,sell_return_audit_id,url]
+
+sell account---------销售账务------------------------
+1. 往来账务【客户所有单据、客户要货情况、客户退货情况，客户帐务】，根据以上的录入，进行sell_library和sell_return_audit的查询，以及对客户的筛选
+2. 货品出货sell_library 筛选
+3. 客户退货 sell_return_audit 筛选
+
+report list------业务分析 报表处理 根据各种基础数据表进行分析查询汇总，要有一个时间的汇总或者时间线----------------------------------------------------------
+1 货品采购统计 【purchase_loading，purchase_return_audit】
+7.2 业务员采购统计【purchase_loading，purchase_return_audit】 关联上具体的采购申请人员
+7.3 库存成本统计 【仓库里面的产品的总成本，当前的store_product】
+7.4 货品出货统计【sell_library,sell_return_audit】
+7.5 货品出货排行【sell_library,sell_return_audit】
+7.6 营业分析 【针对商品出入库变动，以及进货出货价格变动,年度，月份出入库的统计，以及商品分析】
+7.7 供应商供货统计、客户购买统计
+7.8 库存变动表【针对每个仓库和总共仓库的处理】
+3. 年终结算，给出出入库的年度报表，库存状况等
+
+
+ue 完成后抽象到react里面
+，然后接口的设计，然后完成整个
+
+产品的二维码或一维码扫描给出相应的产品信息，并进行数据的填充，然后进行处理，在填写入库单和出库单时
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
