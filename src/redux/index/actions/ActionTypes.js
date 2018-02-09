@@ -1,0 +1,1 @@
+export const EXAMPLE_WELCOME = 'ADD_TO_CART'

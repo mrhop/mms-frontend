@@ -1,12 +1,25 @@
+/**
+ * Created by Donghui Huo on 2018/2/8.
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App'
-import './init.scss';
-/* eslint-disable */
-// https://reactjs.org/docs/error-boundaries.html
 
+import {Provider} from 'react-redux'
+import store, {history} from '../../redux/init/store'
+
+import {ConnectedRouter} from 'react-router-redux'
+
+import './init.scss';
+import  App from '../../containers/init/App'
+import {initOrReFresh} from '../../redux/init/actions'
+
+store.dispatch(initOrReFresh())
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>,
   document.getElementById('root')
 );

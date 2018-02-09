@@ -24,7 +24,8 @@ module.exports = {
     "react"
   ],
   "rules": {
-    "react/prop-types": 0
+    "no-console": 0,
+    "no-unused-vars": 0
     // "linebreak-style": [
     //   "error",
     //   "unix"
