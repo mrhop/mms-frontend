@@ -6,6 +6,10 @@ const init = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.INIT_FIRST_PAGE:
       return {...state, status: 'init1'}
+    case actionTypes.INIT_DB_TEST_SUCCESS:
+      return {...state, status: 'dbTestSuccess'}
+    case actionTypes.INIT_DB_TEST_FAILURE:
+      return {...state, status: 'dbTestFailure'}
     case actionTypes.INIT_COMMITTED_1:
       return {...state, status: 'init2'}
     case actionTypes.INIT_COMMITTED_2:

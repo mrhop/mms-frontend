@@ -11,6 +11,15 @@ export const initOrReFresh = () => (dispatch, getState) => {
   })
 }
 
+export const initDbTest = (data) => (dispatch, getState) => {
+  // to server
+  // 这样的不允许回退
+  console.log('do db Test')
+  return dispatch({
+    type: actionTypes.INIT_DB_TEST_SUCCESS
+  })
+}
+
 export const initSubmit1 = (data) => (dispatch, getState) => {
   // to server
   // 这样的不允许回退

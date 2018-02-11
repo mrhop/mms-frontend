@@ -25,22 +25,32 @@ class InitContentContainer extends Component {
   render() {
     const Step = Steps.Step
     const {status} = this.props
-
-    const StepsLocal = <Steps current={0}>
-      <Step title="In Progress" description="This is a description."/>
-      <Step title="Waiting" description="This is a description."/>
-      <Step title="Waiting" description="This is a description."/>
-    </Steps>
+    let currentStep = 0
+    let initPage = null
     switch (status) {
-      case 'init1':
-        return <Fragment><StepsLocal/><InitContent1{...this.props}/></Fragment>
+      case 'init1' || 'dbTestSuccess' || 'dbTestFailure':
+        initPage = <InitContent1{...this.props}/>
+        currentStep = 0
+        break
       case 'init2':
-        return <InitContent2 {...this.props}/>
+        initPage = <InitContent2{...this.props}/>
+        currentStep = 1
+        break
       case 'init3':
-        return <InitContent3 {...this.props}/>
+        initPage = <InitContent3{...this.props}/>
+        currentStep = 2
+        break
       default:
-        return <InitContent1 {...this.props}/>
+        initPage = <InitContent1{...this.props}/>
+        currentStep = 0
+        break
     }
+    const StepsLocal = <Steps current={currentStep}>
+      <Step title="数据库初始化"/>
+      <Step title="填写企业信息"/>
+      <Step title="跳转登陆页面"/>
+    </Steps>
+    return <Fragment>{StepsLocal}{initPage}</Fragment>
   }
 }
 InitContentContainer.propTypes = {
