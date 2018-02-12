@@ -55,11 +55,13 @@ class InitContentContainer extends Component {
 }
 InitContentContainer.propTypes = {
   status: PropTypes.string.isRequired,
+  dataForm: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => {
   return {
     status: state.init.status,
+    dataForm: state.init.data
   }
 }
 
