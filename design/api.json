@@ -1,0 +1,22 @@
+// INIT 页面
+// 数据库初始化
+{
+  "ip": "1.1.11.1",
+  "port": "11",
+  "account": "aaa",
+  "password": "1111"
+}
+// 企业信息初始化
+{
+  "companyName": "aaa",
+  "contactName": "aaaa",
+  "post": "111",
+  "email": "a@q.com",
+  "phone": "1111111",
+  "cellphone": "111111",
+  "fax": "11111111",
+  "website": "111111",
+  "description": "11111"
+}
+
+// 首页（包含login页面）
