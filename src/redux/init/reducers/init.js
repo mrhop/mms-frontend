@@ -12,6 +12,8 @@ const init = (state = {data: {}}, action) => {
       return {...state, status: 'dbTestSuccess'}
     case actionTypes.INIT_DB_TEST_FAILURE:
       return {...state, status: 'dbTestFailure'}
+    case actionTypes.INIT1_COMMITTING:
+      return {...state, status: 'init1Committing'}
     case actionTypes.INIT1_COMMITTED:
       return {...state, status: 'init2', data: {...state.data, data1: action.data}}
     case actionTypes.INIT1_COMMIT_FAILURE:

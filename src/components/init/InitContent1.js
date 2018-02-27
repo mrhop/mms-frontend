@@ -13,7 +13,6 @@ class InitContent1 extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({loading: true})
         this.props.initSubmit1(values)
       }
     });
@@ -21,7 +20,6 @@ class InitContent1 extends Component {
   dbTest = ()=> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({loading: true})
         this.props.initDbTest(values)
       }
     });
@@ -42,7 +40,10 @@ class InitContent1 extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {status} = nextProps
-    if (status === 'dbTestSuccess' || status === 'dbTestFailure' || status === 'init1CommitFailure') {
+    if (status === 'dbTesting' || status === 'init1Committing') {
+      this.setState({loading: true})
+    }
+    else if (status === 'dbTestSuccess' || status === 'dbTestFailure' || status === 'init1CommitFailure') {
       this.setState({loading: false})
       if (status === 'dbTestSuccess') {
         message.success('数据库连接测试成功');
