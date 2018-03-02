@@ -19,16 +19,25 @@ body {
 header {
   background: $layout-header-background;
   box-shadow: 0px 3px 5px #ddd;
-  .logo-top {
-    width: 120px;
-    height: 39px;
-    background: rgba(255, 255, 255, .8);
-    margin: 12px 24px 12px 0;
-    float: left;
-    color: #333;
-    text-align: center;
-    line-height: 39px;
+  color: #fff;
+  > div.container {
+    height: 64px;
+    .left-info {
+      float: left;
+      display: flex;
+      align-items: flex-end;
+      margin-top: 12px;
+      .logo-top {
+        width: 120px;
+        height: 40px;
+        background: rgba(255, 255, 255, .8);
+        color: #333;
+        text-align: center;
+        line-height: 39px;
+      }
+    }
   }
+
 }
 
 main {

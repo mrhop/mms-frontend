@@ -18,5 +18,46 @@
   "website": "111111",
   "description": "11111"
 }
+// LOGIN页面 ---向后台传递的数据
+// 登录
+{
+  account: "aa啊啊啊啊",
+  password: "aaaa"
+}
+// 忘记密码
+{
+  email: "a@q.com"
+}
+// 注册
+{
+  account: "aaa11",
+  email: "a@q.com",
+  cellphone: "3022563501",
+  password: "111111"
+}
+// 首页 各个功能模块
 
-// 首页（包含login页面）
+// header 部分数据采用session 后台直接回传的方式处理，alertMsgs即时消息采用websocket方式,alertMsgs处理完成时会触发websocket返回更新该alertMsgs
+// session
+{
+  user: {
+    name: 'aa',
+    post: 'pp'
+  },
+  shortcut: [
+    {
+      label: '个人信息修改',
+      value: 'personalinfo'
+    }
+  ],
+  alertMsgs: [
+    {
+      title: '采购入库审批',
+      url: 'purchase/approval'
+    },
+    {
+      title: '销售出库审批',
+      url: 'sell/approval'
+    }
+  ]
+}

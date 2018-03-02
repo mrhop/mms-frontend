@@ -6,7 +6,9 @@ import React from 'react'
 const CommonFooter = (props) => (
   <header>
     <div className="container">
-      <div className="logo-top"/>
+      <div className="left-info">
+        <div className="logo-top"/>
+      </div>
     </div>
   </header>)
 

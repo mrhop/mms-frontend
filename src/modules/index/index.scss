@@ -1,0 +1,23 @@
+header {
+  > .container {
+    .left-info {
+      .short-cut-select {
+        width: 150px;
+        margin-left: 20px;
+      }
+    }
+    .right-info {
+      margin-top: 12px;
+      height: 40px;
+      float: right;
+      display: flex;
+      align-items: flex-end;
+      .quick-msg {
+        cursor: pointer;
+      }
+      .user-info {
+        margin: 0 20px;
+      }
+    }
+  }
+}
