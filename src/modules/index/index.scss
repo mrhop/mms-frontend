@@ -21,3 +21,42 @@ header {
     }
   }
 }
+
+main {
+  .index-main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+    .left-menu {
+      min-height: 500px;
+      background: rgb(0, 21, 41);
+      .ant-menu {
+        transition: none;
+        .ant-menu-item {
+          //transition: width .3s;
+          transition: none;
+          span {
+            //transition: none;
+            margin-left: 10px;
+          }
+          i {
+            //transition: none;
+            margin-right: 0;
+          }
+        }
+      }
+    }
+    .right-content {
+      width: 100%;
+      padding: 16px;
+      overflow-x: auto;
+      min-height: 500px;
+      .inner-content {
+        padding: 16px 0 16px 16px;
+        margin: 0;
+        min-Width: 550px;
+      }
+    }
+  }
+}

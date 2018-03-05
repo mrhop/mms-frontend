@@ -1,0 +1,25 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
+
+header.index-header {
+  > .container {
+    @media (max-width: $screen-xs-max) {
+      .user-info {
+        transition: all .3s;
+        width: 0;
+        display: none;
+      }
+      .quick-msg {
+        transition: all .3s;
+        margin-right: 20px;
+      }
+    }
+    .left-info {
+      .short-cut-select {
+        transition: all .3s;
+        @media (max-width: $screen-phone) {
+          width: 100px
+        }
+      }
+    }
+  }
+}

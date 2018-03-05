@@ -11,9 +11,7 @@ class App extends Component {
       <Fragment>
         <IndexHeader/>
         <main>
-          <div className="container">
-            <IndexContainer/>
-          </div>
+          <IndexContainer/>
         </main>
         <CommonFooter/>
       </Fragment>

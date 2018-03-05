@@ -39,7 +39,7 @@ class LoginInfo extends Component {
     const {alertMsgs, msgNum} = this.state
     return (
       <div className="right-info">
-        <Popover placement="bottom" title="当前事项" content={alertMsgs} trigger="click">
+        <Popover className="alert-msg" placement="bottom" title="当前事项" content={alertMsgs} trigger="click">
           <Badge className="quick-msg" count={msgNum}><Avatar size="small" icon="bell"/></Badge>
         </Popover>
         <span className="user-info">XXX(库存管理员)</span>
