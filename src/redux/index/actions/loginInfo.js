@@ -14,7 +14,7 @@ export const loginInfo = (data) => (dispatch, getState) => {
         url: 'sell/approval'
       }]
     })
-  }, 1000)
+  }, 300)
   return dispatch({
     type: actionTypes.LOGIN_INFO_INITING
   })

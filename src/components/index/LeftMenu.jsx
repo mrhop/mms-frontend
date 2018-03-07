@@ -1,15 +1,93 @@
 import React, {Component, Fragment} from 'react';
-import {Menu, Icon, Button, Layout} from 'antd';
-const {Header, Content, Sider} = Layout;
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+
+import {Link} from "react-router-dom";
+
+import {Menu, Icon} from 'antd';
 const SubMenu = Menu.SubMenu;
+import  {leftMenu as leftMenuData} from '../../common/TempData'
+
 
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      collapsed: window.innerWidth < 768 ? true : false
+    let menuItems = this.iterateItems(leftMenuData, null)
+    const {dataProps} = this.props
+    if (dataProps.pathname === '/') {
+      this.currentKeys = ['index']
+      this.openKeys = []
+
     }
-    window.addEventListener('resize', this.toggleCollapsed.bind(this))
+    this.state = {
+      collapsed: window.innerWidth < 768 ? true : false,
+      menuItems,
+      currentKeys: this.currentKeys,
+      openKeys: this.openKeys
+    }
+    this.resizeFun = this.toggleCollapsed.bind(this)
+    window.addEventListener('resize', this.resizeFun)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeFun)
+  }
+
+  iterateItems = function (arr, parent) {
+    const {dataProps} = this.props
+    let locations = dataProps.pathname.split('/')
+    locations.splice(0, 1)
+    let currentKey = locations[locations.length - 1]
+    return arr.map(function (val) {
+      if (val.key === currentKey && val.url === dataProps.pathname) {
+        this.currentKeys = [val.key]
+        if (parent) {
+          this.openKeys = [parent.key]
+        }
+      }
+
+      if (val.children) {
+        let subItems = this.iterateItems(val.children, val)
+        let title = null
+        if (val.url) {
+          title = <Link to={val.url}
+                        onClick={(e)=>{this.handleSubItemClick.call(this,val.key,e.currentTarget)}}><span>{val.icon &&
+          <Icon type={val.icon}/>}<span>
+    {val.title}</span></span></Link>
+        } else {
+          title = <span>{val.icon && <Icon type={val.icon}/>}<span>{val.title}</span></span>
+        }
+        return <SubMenu key={val.key}
+                        title={title}>
+          {subItems}
+        </SubMenu>
+      } else {
+        return <Menu.Item key={val.key}>
+          <Link to={val.url}>{val.icon && <Icon type={val.icon}/>}
+            <span>{val.title}</span></Link>
+        </Menu.Item>
+      }
+    }.bind(this))
+  }
+
+  handleClick = (e) => {
+    this.setState({
+      currentKeys: [e.key],
+    });
+    Array.prototype.forEach.call(document.getElementsByClassName('ant-menu-submenu-title'), function (e) {
+      e.classList.remove('sub-item-selected')
+    });
+  }
+
+  handleSubItemClick = (key, target) => {
+    this.setState({
+      currentKeys: [key]
+    });
+    target.parentElement.classList.add('sub-item-selected')
+  }
+
+  onOpenChange = (openKeys) => {
+    this.setState({openKeys});
   }
 
   toggleCollapsed = () => {
@@ -21,42 +99,36 @@ class LeftMenu extends React.Component {
   }
 
   render() {
+    const {currentKeys, collapsed, menuItems, openKeys} = this.state
     return (
-      <div className="left-menu" style={{minHeight:500,background:'rgb(0, 21, 41)'}}>
+      <div className="left-menu">
         <Menu
           mode="inline"
           theme="dark"
-          inlineCollapsed={this.state.collapsed}
+          inlineCollapsed={collapsed}
+          selectedKeys={currentKeys}
+          openKeys={openKeys}
+          onClick={this.handleClick}
+          onOpenChange={this.onOpenChange}
         >
-          <Menu.Item key="1">
-            <Icon type="pie-chart"/>
-            <span>Option 1</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Icon type="desktop"/>
-            <span>Option 2</span>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Icon type="inbox"/>
-            <span>Option 3</span>
-          </Menu.Item>
-          <SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
-            <Menu.Item key="5">Option 5</Menu.Item>
-            <Menu.Item key="6">Option 6</Menu.Item>
-            <Menu.Item key="7">Option 7</Menu.Item>
-            <Menu.Item key="8">Option 8</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="11">Option 11</Menu.Item>
-              <Menu.Item key="12">Option 12</Menu.Item>
-            </SubMenu>
-          </SubMenu>
+          {menuItems}
         </Menu></div>
     );
   }
 }
 
-export  default LeftMenu
+LeftMenu.propTypes = {
+  dataProps: PropTypes.object
+}
+
+const mapStateToProps = (state) => {
+  return {
+    dataProps: state.locationChange.data
+  }
+}
+const LeftMenuProxy = connect(
+  mapStateToProps
+)(LeftMenu)
+
+export default LeftMenuProxy;
+

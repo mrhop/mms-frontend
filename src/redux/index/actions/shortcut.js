@@ -11,7 +11,7 @@ export const shortcut = (data) => (dispatch, getState) => {
         value:'personalinfo'
       }]
     })
-  }, 2000)
+  }, 300)
   return dispatch({
     type: actionTypes.SHORTCUT_INITING
   })

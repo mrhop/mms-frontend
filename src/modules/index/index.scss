@@ -1,9 +1,15 @@
-header {
-  > .container {
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
+
+header.index-header {
+  > .container-fluid {
     .left-info {
       .short-cut-select {
         width: 150px;
         margin-left: 20px;
+        transition: all .3s;
+        @media (max-width: $screen-phone) {
+          width: 100px
+        }
       }
     }
     .right-info {
@@ -18,7 +24,19 @@ header {
       .user-info {
         margin: 0 20px;
       }
+      @media (max-width: $screen-xs-max) {
+        .user-info {
+          transition: all .3s;
+          width: 0;
+          display: none;
+        }
+        .quick-msg {
+          transition: all .3s;
+          margin-right: 20px;
+        }
+      }
     }
+
   }
 }
 
@@ -31,8 +49,22 @@ main {
     .left-menu {
       min-height: 500px;
       background: rgb(0, 21, 41);
-      .ant-menu {
+      .ant-menu-root {
+        min-width: 180px;
         transition: none;
+        &.ant-menu-inline-collapsed {
+          min-width: 1px;
+        }
+        .ant-menu-submenu {
+          a {
+            color: rgba(255, 255, 255, 0.65);
+          }
+          &:hover {
+            a {
+              color: #fff;
+            }
+          }
+        }
         .ant-menu-item {
           //transition: width .3s;
           transition: none;
@@ -44,14 +76,45 @@ main {
             //transition: none;
             margin-right: 0;
           }
+          a {
+            color: rgba(255, 255, 255, 0.65);
+          }
+          &:hover {
+            a {
+              color: #fff;
+            }
+          }
+          &.ant-menu-item-selected {
+            a {
+              color: #fff;
+            }
+          }
+        }
+        .ant-menu-submenu {
+          div.ant-menu-submenu-title.sub-item-selected {
+            background-color: #1890ff;
+            a {
+              color: #fff;
+            }
+          }
         }
       }
     }
     .right-content {
       width: 100%;
-      padding: 16px;
       overflow-x: auto;
       min-height: 500px;
+      .ant-breadcrumb {
+        padding: 16px 0 8px 16px;
+        box-shadow: 0 1px 5px;
+        min-Width: 550px;
+        a {
+          color: #1890ff;
+          &:hover {
+            color: #40a9ff;
+          }
+        }
+      }
       .inner-content {
         padding: 16px 0 16px 16px;
         margin: 0;

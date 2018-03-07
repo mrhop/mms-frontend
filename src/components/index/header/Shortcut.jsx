@@ -2,36 +2,14 @@
  * Created by Donghui Huo on 2018/2/27.
  */
 import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
-import {Form, Select, Icon, Input, Button, Checkbox, Alert, message, Spin} from 'antd';
-import {shortcutActions} from '../../../redux/index/actions'
-import * as ActionTypes from '../../../redux/index/actions/ActionTypes'
 import {history} from '../../../redux/index/store'
 
+import {Select} from 'antd';
 const Option = Select.Option;
 
-class Shortcut extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      options: []
-    }
-    this.props.shortcut()
-  }
+import  {shortcut} from '../../../common/TempData'
 
-  componentWillReceiveProps(nextProps) {
-    const {status, dataProps} = nextProps
-    if (status === ActionTypes.SHORTCUT_INITED) {
-      if (dataProps) {
-        let options = dataProps.map(function (val) {
-          return <Option value={val.value} key={val.value}>{val.label}</Option>;
-        })
-        this.setState({options})
-      }
-    }
-  }
+class Shortcut extends Component {
 
   handleChange = (value) => {
     console.log('change:' + value)
@@ -40,8 +18,9 @@ class Shortcut extends Component {
   render() {
     // 用于判断并给出指定值，判断是否已经选定
     console.log('location:' + history.location.pathname)
-    const {options} = this.state
-
+    let options = shortcut.map(function (val) {
+      return <Option value={val.value} key={val.value}>{val.label}</Option>;
+    })
     return (
       <Select
         className="short-cut-select"
@@ -54,24 +33,5 @@ class Shortcut extends Component {
     );
   }
 }
-Shortcut.propTypes = {
-  status: PropTypes.string,
-  shortcut: PropTypes.func.isRequired,
-  dataProps: PropTypes.array
-}
 
-const mapStateToProps = (state) => {
-  return {
-    status: state.shortcut.status,
-    dataProps: state.shortcut.data
-  }
-}
-
-const mapDispatchToProps = {
-  ...shortcutActions
-}
-const ShortcutProxy = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Shortcut)
-export default ShortcutProxy;
+export default Shortcut;

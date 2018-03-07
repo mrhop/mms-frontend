@@ -5,9 +5,6 @@ import React, {Component, Fragment} from 'react';
 import Shortcut from './Shortcut'
 import LoginInfo from './LoginInfo'
 
-import './header.scss'
-
-
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +15,7 @@ class Header extends Component {
 
     return (
       <header className="index-header">
-        <div className="container">
+        <div className="container-fluid">
           <div className="left-info">
             <div className="logo-top"/>
             <Shortcut/>

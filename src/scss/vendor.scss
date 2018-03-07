@@ -20,7 +20,7 @@ header {
   background: $layout-header-background;
   box-shadow: -1px -1px 2px #aaa inset;
   color: #fff;
-  > div.container {
+  > div.container,> div.container-fluid {
     height: 64px;
     .left-info {
       float: left;

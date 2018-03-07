@@ -9,6 +9,7 @@ import {Form, Select, Icon, Avatar, Badge, Popover} from 'antd';
 import {loginInfoActions} from '../../../redux/index/actions'
 import * as ActionTypes from '../../../redux/index/actions/ActionTypes'
 
+import  {user} from '../../../common/TempData'
 
 class LoginInfo extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class LoginInfo extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {status, dataProps} = this.props
+    const {status, dataProps} = nextProps
     if (status === ActionTypes.LOGIN_INFO_INITED) {
       if (dataProps) {
         // 给出数据信息
@@ -42,7 +43,7 @@ class LoginInfo extends Component {
         <Popover className="alert-msg" placement="bottom" title="当前事项" content={alertMsgs} trigger="click">
           <Badge className="quick-msg" count={msgNum}><Avatar size="small" icon="bell"/></Badge>
         </Popover>
-        <span className="user-info">XXX(库存管理员)</span>
+        <span className="user-info">{user.name}({user.post})</span>
         <a href="/logout">注销</a>
       </div>
     );

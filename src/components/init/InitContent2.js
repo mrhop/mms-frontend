@@ -3,7 +3,6 @@
  */
 import  React, {Component, Fragment} from 'react'
 import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin} from 'antd';
-import {ipValidate, portValidate} from  '../../common/FormValidate';
 import {formItemLayout, formItemTailLayout} from '../../common/FormLayout';
 import {urlSelectAfter, urlSelectBefore} from '../../common/FormVars';
 
