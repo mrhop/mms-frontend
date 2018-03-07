@@ -90,8 +90,8 @@ main {
             }
           }
         }
-        .ant-menu-submenu {
-          div.ant-menu-submenu-title.sub-item-selected {
+        .ant-menu-submenu.sub-item-selected {
+          div.ant-menu-submenu-title {
             background-color: #1890ff;
             a {
               color: #fff;

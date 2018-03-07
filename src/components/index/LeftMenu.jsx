@@ -12,42 +12,58 @@ import  {leftMenu as leftMenuData} from '../../common/TempData'
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
-    let menuItems = this.iterateItems(leftMenuData, null)
     const {dataProps} = this.props
+    let currentKey = null
     if (dataProps.pathname === '/') {
-      this.currentKeys = ['index']
-      this.openKeys = []
-
+      currentKey = 'index'
+    } else {
+      let locations = dataProps.pathname.split('/')
+      locations.splice(0, 1)
+      currentKey = locations[locations.length - 1]
     }
+    let menuItems = this.iterateItems(leftMenuData, null, currentKey, dataProps.pathname)
     this.state = {
       collapsed: window.innerWidth < 768 ? true : false,
       menuItems,
-      currentKeys: this.currentKeys,
+      currentKeys: [currentKey],
       openKeys: this.openKeys
     }
     this.resizeFun = this.toggleCollapsed.bind(this)
     window.addEventListener('resize', this.resizeFun)
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {dataProps} = nextProps
+    let currentKey = null
+    if (dataProps.pathname === '/') {
+      currentKey = 'index'
+    } else {
+      let locations = dataProps.pathname.split('/')
+      locations.splice(0, 1)
+      currentKey = locations[locations.length - 1]
+    }
+    if (this.state.currentKeys == null || this.state.currentKeys.indexOf(currentKey) < 0) {
+      let menuItems = this.iterateItems(leftMenuData, null, currentKey, dataProps.pathname)
+      this.setState({currentKeys: [currentKey]})
+      this.setState({openKeys: this.openKeys})
+      this.setState({menuItems})
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeFun)
   }
 
-  iterateItems = function (arr, parent) {
-    const {dataProps} = this.props
-    let locations = dataProps.pathname.split('/')
-    locations.splice(0, 1)
-    let currentKey = locations[locations.length - 1]
+
+  iterateItems = function (arr, parent, currentKey, pathname) {
     return arr.map(function (val) {
-      if (val.key === currentKey && val.url === dataProps.pathname) {
-        this.currentKeys = [val.key]
+      if (val.key === currentKey && val.url === pathname) {
         if (parent) {
           this.openKeys = [parent.key]
         }
       }
-
       if (val.children) {
-        let subItems = this.iterateItems(val.children, val)
+        let subItems = this.iterateItems(val.children, val, currentKey, pathname)
         let title = null
         if (val.url) {
           title = <Link to={val.url}
@@ -57,10 +73,17 @@ class LeftMenu extends React.Component {
         } else {
           title = <span>{val.icon && <Icon type={val.icon}/>}<span>{val.title}</span></span>
         }
-        return <SubMenu key={val.key}
-                        title={title}>
-          {subItems}
-        </SubMenu>
+        if (val.key === currentKey && val.url === pathname) {
+          return <SubMenu key={val.key}  className="sub-item-selected"
+                          title={title}>
+            {subItems}
+          </SubMenu>
+        }else{
+          return <SubMenu key={val.key}
+                          title={title}>
+            {subItems}
+          </SubMenu>
+        }
       } else {
         return <Menu.Item key={val.key}>
           <Link to={val.url}>{val.icon && <Icon type={val.icon}/>}
@@ -70,11 +93,12 @@ class LeftMenu extends React.Component {
     }.bind(this))
   }
 
+
   handleClick = (e) => {
     this.setState({
       currentKeys: [e.key],
     });
-    Array.prototype.forEach.call(document.getElementsByClassName('ant-menu-submenu-title'), function (e) {
+    Array.prototype.forEach.call(document.getElementsByClassName('ant-menu-submenu'), function (e) {
       e.classList.remove('sub-item-selected')
     });
   }
@@ -83,7 +107,7 @@ class LeftMenu extends React.Component {
     this.setState({
       currentKeys: [key]
     });
-    target.parentElement.classList.add('sub-item-selected')
+    target.parentElement.parentElement.classList.add('sub-item-selected')
   }
 
   onOpenChange = (openKeys) => {

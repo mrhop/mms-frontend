@@ -5,14 +5,14 @@ import React, {Component, Fragment} from 'react';
 import {history} from '../../../redux/index/store'
 
 import {Select} from 'antd';
-const Option = Select.Option;
-
 import  {shortcut} from '../../../common/TempData'
+
+const Option = Select.Option;
 
 class Shortcut extends Component {
 
   handleChange = (value) => {
-    console.log('change:' + value)
+    history.push(value)
   }
 
   render() {

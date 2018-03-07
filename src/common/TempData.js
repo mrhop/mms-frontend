@@ -50,6 +50,6 @@ export const user = {
 export const shortcut = [
   {
     label: '个人信息修改',
-    value: 'personalinfo'
+    value: '/accesscontrol/personalinfo'
   }
 ]

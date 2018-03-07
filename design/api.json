@@ -38,51 +38,71 @@
 // 首页 各个功能模块
 
 // header user部分数据采用session 后台直接回传的方式处理，alertMsgs即时消息采用websocket方式,alertMsgs处理完成时会触发websocket返回更新该alertMsgs
+// session中信息
 {
   user: {
     name: 'aa',
-    post: 'pp'
+    post: 'pp',
+    role: [],
+    authority: []
   },
-
-  alertMsgs: [
+  shortcut: [
     {
-      title: '采购入库审批',
-      url: 'purchase/approval'
-    },
-    {
-      title: '销售出库审批',
-      url: 'sell/approval'
+      label: '个人信息修改',
+      value: 'personalinfo'
     }
   ]
 }
-
+//  alertMsgs
+[
+  {
+    title: '采购入库审批',
+    url: 'purchase/approval'
+  },
+  {
+    title: '销售出库审批',
+    url: 'sell/approval'
+  }
+]
 // left menu -这个涉及到权限，所以使用伴随后台获取，保存到cookie的方式，现在给出一个common js file
-[{
-  id: 1,
-  title: 'Menu1',
-  icon: 'setting',
-  url: '/test1'
-}, {
-  id:2,
-  title: 'Menu2',
-  icon: 'mail',
-  children: [
-    {
-      id:3,
-      title: 'Menu2-1',
-      icon: 'appstore',
-      url: '/test2/mail1'
-    },
-    {
-      id:4,
-      title: 'Menu2-2',
-      icon: 'appstore',
-      children: [
-        {
-          id:5,
-          title: 'Menu2-2-1',
-          url: '/test2/mail2/user1'
-        }]
-    }
-  ]
-}]
+[
+  {
+    key: 'index',
+    title: '概览',
+    icon: 'dashboard',
+    url: '/'
+  },
+  {
+    key: 'accesscontrol',
+    title: '访问控制',
+    icon: 'user',
+    url: '/accesscontrol',
+    children: [
+      {
+        key: 'post',
+        title: '职位管理',
+        url: '/accesscontrol/post'
+      },
+      {
+        key: 'authority',
+        title: '权限管理',
+        url: '/accesscontrol/authority'
+      },
+      {
+        key: 'role',
+        title: '角色管理',
+        url: '/accesscontrol/role'
+      },
+      {
+        key: 'user',
+        title: '用户管理',
+        url: '/accesscontrol/user'
+      },
+      {
+        key: 'personalinfo',
+        title: '个人信息维护',
+        url: '/accesscontrol/personalinfo'
+      }
+    ]
+  }
+]
