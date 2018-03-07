@@ -30,14 +30,12 @@ const locateItem = function (arr, target) {
 //3.当上级目录找不到，无权限时，不显示该父目录
 class CustomBreadcrumb extends React.Component {
   constructor(props) {
-    console.log('constructor')
     super(props);
     const {dataProps} = props
     this.state = this.checkUrl(dataProps)
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('WillReceiveProps')
     this.setState(this.checkUrl(nextProps.dataProps))
   }
 
@@ -54,7 +52,7 @@ class CustomBreadcrumb extends React.Component {
       if (!currentItem || currentItem.url !== dataProps.pathname) {
         const location = {
           pathname: '/404',
-          state: {errorMsg: 'access denied'}
+          state: {errorMsg: 'No page found(404) or Access denied(401)'} 
         }
         history.push(location)
         return {
