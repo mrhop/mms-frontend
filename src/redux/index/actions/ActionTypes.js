@@ -1,4 +1,3 @@
-export const EXAMPLE_WELCOME = 'ADD_TO_CART'
 // location change
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE'
 
@@ -17,3 +16,9 @@ export const LOGIN_INFO_FAILURE = 'LOGIN_INFO_FAILURE'
 export const LEFT_MENU_INITING = 'LEFT_MENU_INITING'
 export const LEFT_MENU_INITED = 'LEFT_MENU_INITED'
 export const LEFT_MENU_FAILURE = 'LEFT_MENU_FAILURE'
+
+
+// 首页数据获取
+export const INDEX_DATA_INITING = 'INDEX_DATA_INITING'
+export const INDEX_DATA_INITED = 'INDEX_DATA_INITED'
+export const INDEX_DATA_FAILURE = 'INDEX_DATA_FAILURE'

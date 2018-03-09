@@ -5,6 +5,5 @@ npm --registry https://registry.npm.taobao.org install -g node-sass
 
 
 明天
-1.开始各个页面的初始化操作
-2.现在关联到 1> shortcut 的处理，最好清理掉，而不是变换，因为shortcut可以做刷新
-
+1.首页基本完事
+2.开始访问控制页面的实现

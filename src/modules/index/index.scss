@@ -43,8 +43,9 @@ header.index-header {
 main {
   .index-main {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-start; /* align items in Main Axis */
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
     padding: 0;
     .left-menu {
       min-height: 500px;
@@ -116,7 +117,7 @@ main {
         }
       }
       .inner-content {
-        padding: 16px 0 16px 16px;
+        padding: 16px 0 16px;
         margin: 0;
         min-Width: 550px;
       }
