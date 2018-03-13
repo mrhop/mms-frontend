@@ -1,4 +1,5 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
+@import "../../scss/import";
 
 header.index-header {
   > .container-fluid {
@@ -49,7 +50,7 @@ main {
     padding: 0;
     .left-menu {
       min-height: 500px;
-      background: rgb(0, 21, 41);
+      background: #000c17;
       .ant-menu-root {
         min-width: 180px;
         transition: none;
@@ -117,9 +118,51 @@ main {
         }
       }
       .inner-content {
-        padding: 16px 0 16px;
+        padding: 16px;
         margin: 0;
         min-Width: 550px;
+        .row {
+          margin-left: -5px;
+          margin-right: -5px;
+          .col {
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        }
+        hr {
+          box-shadow: 0 1px 5px;
+          height: 1px;
+          border: none;
+        }
+      }
+      a.button {
+        width: 130px;
+        color: #fff;
+        background-color: $link-color;
+        &.shadow{
+          box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.35);
+        }
+        &:hover {
+          background-color: $link-hover-color;
+        }
+        &:active {
+          background-color: $link-active-color;
+        }
+        border: 1px solid $link-color;
+        line-height: 2.5;
+        box-sizing: border-box;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: 400;
+        text-align: center;
+        padding: 0 15px;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: all $animation-duration-base $ease-in-out;
+        position: relative;
+      }
+      div.actions {
+        text-align: right;
       }
     }
   }

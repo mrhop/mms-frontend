@@ -24,7 +24,7 @@ class Login extends Component {
     if (status === ActionTypes.LOGIN_COMMITTING) {
       this.setState({loading: true})
     } else if (status === ActionTypes.LOGIN_COMMITTED) {
-      window.location.href = '/index.html'
+      window.location.href = '/'
       this.setState({loading: false})
     } else if (status === ActionTypes.LOGIN_FAILURE) {
       this.setState({loading: false})

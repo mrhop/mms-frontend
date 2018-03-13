@@ -108,7 +108,7 @@ class Index extends Component {
     const {loading, dataArr, productCountType} = this.state;
     const {purchaseDate, store, saleDate, productDate, employeeDate} = this.props;
 
-    return <div className="row index-section">
+    return <div className="row">
       <div className="col col-sm-6 col-xs-12" ref={(col) => { this.col1 = col; }}>
         <Collapse onChange={this.callback}>
           <Panel header="采购分析" key={IndexUtils.PURCHASE_ANALYSIS}>

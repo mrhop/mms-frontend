@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 
 import {Breadcrumb} from 'antd';
 
-import  {leftMenu} from '../../common/TempData'
+import  {validateAuthority} from '../../common/TempData'
 
 
 const locateItem = function (arr, target) {
@@ -48,11 +48,11 @@ class CustomBreadcrumb extends React.Component {
     } else {
       let locations = dataProps.pathname.split('/')
       locations.splice(0, 1)
-      let currentItem = locateItem(leftMenu, locations[locations.length - 1])
+      let currentItem = validateAuthority(locations[locations.length - 1])
       if (!currentItem || currentItem.url !== dataProps.pathname) {
         const location = {
           pathname: '/404',
-          state: {errorMsg: 'No page found(404) or Access denied(401)'} 
+          state: {errorMsg: 'No page found(404) or Access denied(401)'}
         }
         history.push(location)
         return {
@@ -74,8 +74,8 @@ class CustomBreadcrumb extends React.Component {
         if (index === (locations.length - 1)) {
           return <Breadcrumb.Item key={currentItem.key}>{currentItem.title}</Breadcrumb.Item>
         } else {
-          let item = locateItem(leftMenu, val)
-          if (item) {
+          let item = validateAuthority(val)
+          if (item) { 
             return <Breadcrumb.Item key={item.key}><Link to={item.url}>{item.title}</Link></Breadcrumb.Item>
           }
         }

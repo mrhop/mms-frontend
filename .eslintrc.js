@@ -25,7 +25,8 @@ module.exports = {
   ],
   "rules": {
     "no-console": 0,
-    "no-unused-vars": 0
+    "no-unused-vars": 0,
+    "react/display-name": 0
     // "linebreak-style": [
     //   "error",
     //   "unix"
