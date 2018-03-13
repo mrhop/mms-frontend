@@ -21,20 +21,26 @@ export const getPostList = (data) => (dispatch, getState) => {
 
 export const getPostSingle = (data) => (dispatch, getState) => {
   // to server
-  setTimeout(function () {
-    // 根据时间段，关键条件进行过滤
-    console.log('getPostSingle success')
-    // 此处返回快捷方式的data
-    Object.assign(data, {
-      type: actionTypes.ACCESSCONTROL_POST_SINGLE_GOT,
-      data: TempData.PostTempData.single.data
+  if (data && data.id) {
+    setTimeout(function () {
+      // 根据时间段，关键条件进行过滤
+      console.log('getPostSingle success')
+      // 此处返回快捷方式的data
+      return dispatch(Object.assign(data, {
+        type: actionTypes.ACCESSCONTROL_POST_SINGLE_GOT,
+        data: TempData.PostTempData.single.data
+      }))
+    }, 300)
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_POST_SINGLE_QUERY
     })
-    return dispatch(data)
-  }, 300)
-  return dispatch({
-    type: actionTypes.ACCESSCONTROL_POST_SINGLE_QUERY
-  })
+  } else {
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_POST_SINGLE_INIT,
+    })
+  }
 }
+
 
 export const savePost = (data) => (dispatch, getState) => {
   // to server
