@@ -3,7 +3,8 @@
  */
 import React, {Component, Fragment} from 'react';
 import {Link} from 'react-router-dom'
-import {Table, Icon, Divider} from 'antd';
+import {Table, Icon, Divider, Modal, Button} from 'antd';
+const confirm = Modal.confirm;
 
 
 import {BasicColor} from './Utils'
@@ -340,56 +341,87 @@ export const IndexTempData = {
   },
 }
 
+// options
+export const optionsTempData = {
+  post: [
+    {
+      value: 1,
+      text: '采购处理',
+    },
+    {
+      value: 2,
+      text: '采购审核',
+    },
+    {
+      value: 3,
+      text: '库存处理',
+    },
+    {
+      value: 4,
+      text: '库存审核',
+    },
+  ]
+}
+
 // post folder
 export const PostTempData = {
-  list: {
-    columns: [{
-      title: '名称',
-      dataIndex: 'name',
-      key: 'name'
-    }, {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-      <Link to={{
-          pathname: '/accesscontrol/post/updatepost',
-          state: { id: record.key }
-      }}>修改</Link>
-      <Divider type="vertical"/>
-      <a href="#">删除</a>
-    </span>
-      )
-    }],
-    data: [
-      {
-        key: 1,
-        name: '采购处理',
-        description: '负责采购操作(填写采购申请，采购申报和采购入库)'
-      },
-      {
-        key: 2,
-        name: '采购审核',
-        description: '负责对采购单进行审批，并审核即将入库的采购商品.'
-      },
-      {
-        key: 3,
-        name: '库存处理',
-        description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
-      },
-      {
-        key: 4,
-        name: '库存审核',
-        description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
-      },
-    ]
-  },
-  single: {
-    data: {
-      id: 1,
+  list: [
+    {
+      key: 1,
       name: '采购处理',
       description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const AuthorityTempData = {
+  list: [
+    {
+      key: 1,
+      name: '采购申请',
+      post: '采购',
+      parent: '采购管理',
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      post: '采购审核',
+      parent: '采购管理',
+    },
+    {
+      key: 3,
+      name: '采购入库',
+      post: '采购',
+      parent: '采购管理',
     }
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    post: '采购',
+    parent: '采购管理',
+    url: '/purchase',
+    inMenu: false
   }
 }
 
