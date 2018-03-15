@@ -130,7 +130,22 @@ export const availableMenu = [
       {
         key: 'user',
         title: '用户管理',
-        url: '/accesscontrol/user'
+        url: '/accesscontrol/user',
+        children: [
+          {
+            key: 'adduser',
+            title: '新增用户',
+            url: '/accesscontrol/user/adduser'
+          },
+          {
+            key: 'updateuser',
+            title: '修改用户',
+            url: '/accesscontrol/user/updateuser'
+          },
+          {
+            key: 'userDelete'
+          },
+        ]
       },
       {
         key: 'personalinfo',
@@ -417,7 +432,23 @@ export const optionsTempData = {
     label: 'Node2',
     value: '0-1',
     key: '0-1',
-  }]
+  }],
+  role: [{
+    value: 1,
+    text: '采购处理',
+  },
+    {
+      value: 2,
+      text: '采购审核',
+    },
+    {
+      value: 3,
+      text: '库存处理',
+    },
+    {
+      value: 4,
+      text: '库存审核',
+    }]
 }
 
 // post folder
@@ -481,8 +512,6 @@ export const AuthorityTempData = {
     inMenu: true
   }
 }
-
-
 export const RoleTempData = {
   list: [
     {
@@ -514,7 +543,53 @@ export const RoleTempData = {
     id: 1,
     name: '采购处理',
     roleCode: 'purchase',
-    authorities: ['0-0', '0-0-1','0 - 1'],
+    authorities: ['0-0', '0-0-1', '0 - 1'],
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const UserTempData = {
+  list: [
+    {
+      key: 1,
+      name: '采购员',
+      account: 'purchaser1',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111111',
+      email: 'a@a.com',
+      address: 'XX路',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购员2',
+      account: 'purchaser2',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111112',
+      email: 'a@ac.com',
+      address: 'XX路'
+    },
+    {
+      key: 3,
+      name: '采购员3',
+      account: 'purchaser3',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111113',
+      email: 'a@ad.com',
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购员1',
+    account: 'purchaser1',
+    roles: [1, 2],
+    post: 1,
+    email: 'a@a.com',
+    cellphone: '13111111111',
+    address: 'XX路',
     description: '负责采购操作(填写采购申请，采购申报和采购入库)'
   }
 

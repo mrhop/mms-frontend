@@ -14,6 +14,8 @@ import  Role from '../../components/index/accessControl/role'
 import  RoleAdd from '../../components/index/accessControl/role/Add'
 import  RoleUpdate from '../../components/index/accessControl/role/Update'
 import  User from '../../components/index/accessControl/user'
+import  UserAdd from '../../components/index/accessControl/user/Add'
+import  UserUpdate from '../../components/index/accessControl/user/Update'
 import  PersonalInfo from '../../components/index/accessControl/PersonalInfo'
 export default [
   {
@@ -64,6 +66,14 @@ export default [
       {
         path: "/accesscontrol/user",
         component: User
+      },
+      {
+        path: "/accesscontrol/user/adduser",
+        component: UserAdd
+      },
+      {
+        path: "/accesscontrol/user/updateuser",
+        component: UserUpdate
       },
       {
         path: "/accesscontrol/personalinfo",

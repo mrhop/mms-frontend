@@ -47,11 +47,27 @@ const accessControlRoleSingle = (state = {}, action) => {
     return {}
   }
 }
+const accessControlUserList = (state = {}, action) => {
+  if (action && action.type && (action.type.indexOf('ACCESSCONTROL_USER_LIST') > -1 || action.type.indexOf('ACCESSCONTROL_USER_DELETE') > -1)) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+const accessControlUserSingle = (state = {}, action) => {
+  if (action && action.type && (action.type.indexOf('ACCESSCONTROL_USER_SINGLE') > -1 || action.type.indexOf('ACCESSCONTROL_USER_SAVE') > -1)) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
 export default {
   accessControlPostList,
   accessControlPostSingle,
   accessControlAuthorityList,
   accessControlAuthoritySingle,
   accessControlRoleList,
-  accessControlRoleSingle
+  accessControlRoleSingle,
+  accessControlUserList,
+  accessControlUserSingle
 }

@@ -42,3 +42,16 @@ export const getAuthorityParentTreeOptions = (data) => (dispatch, getState) => {
     })
   }, 300)
 }
+
+export const getRoleOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getRole option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_OPTIONS_GOT,
+      data: TempData.optionsTempData.role
+    })
+  }, 300)
+}

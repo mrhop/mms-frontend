@@ -26,8 +26,18 @@ const accessControlAuthorityParentTreeOptions = (state = {}, action) => {
     return {}
   }
 }
+const accessControlRoleOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('ACCESSCONTROL_ROLE_OPTIONS_GOT') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
 
 
 export default {
-  accessControlPostOptions, accessControlAuthorityParentOptions, accessControlAuthorityParentTreeOptions
+  accessControlPostOptions,
+  accessControlAuthorityParentOptions,
+  accessControlAuthorityParentTreeOptions,
+  accessControlRoleOptions
 }

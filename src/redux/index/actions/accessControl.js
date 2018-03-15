@@ -141,7 +141,7 @@ export const deleteAuthority = (data) => (dispatch, getState) => {
   })
 }
 
-// Authority
+// Role
 export const getRoleList = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
@@ -208,5 +208,75 @@ export const deleteRole = (data) => (dispatch, getState) => {
   }, 300)
   return dispatch({
     type: actionTypes.ACCESSCONTROL_ROLE_DELETE_BEGIN,
+  })
+}
+
+// User
+export const getUserList = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    // data to server
+    console.log('getUserList success', data)
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_USER_LIST_GOT,
+      data: TempData.UserTempData.list
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_USER_LIST_QUERY
+  })
+}
+
+export const getUserSingle = (data) => (dispatch, getState) => {
+  // to server
+  if (data && data.id) {
+    setTimeout(function () {
+      // 根据时间段，关键条件进行过滤
+      console.log('getUserSingle success')
+      // 此处返回快捷方式的data
+      return dispatch(Object.assign(data, {
+        type: actionTypes.ACCESSCONTROL_USER_SINGLE_GOT,
+        data: TempData.UserTempData.single
+      }))
+    }, 300)
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_USER_SINGLE_QUERY
+    })
+  } else {
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_USER_SINGLE_INIT,
+    })
+  }
+}
+
+export const saveUser = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('saveUser success', data)
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_USER_SAVE_SUCCESS,
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_USER_SAVE_BEGIN,
+  })
+}
+
+export const deleteUser = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('deleteUser success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_USER_DELETE_SUCCESS,
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_USER_DELETE_BEGIN,
   })
 }
