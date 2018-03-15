@@ -82,11 +82,15 @@ class Add extends Component {
               required: true, message: '必选字段!'
             }],
           })(
-            <Input placeholder="角色CODE"/>
+            <Input addonBefore="ROLE_" placeholder="角色CODE"/>
           )}
         </FormItem>
         <FormItem label="包含权限" {...formItemLayout}>
-          {getFieldDecorator('authorities')(
+          {getFieldDecorator('authorities', {
+            rules: [{
+              required: true, message: '必选字段!'
+            }],
+          })(
             <TreeSelect
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               treeData={authorityParentOptions}
@@ -113,7 +117,7 @@ class Add extends Component {
 
 Add.propTypes = {
   location: PropTypes.object,
-  data:PropTypes.any,
+  data: PropTypes.any,
   type: PropTypes.string,
   saveRole: PropTypes.func,
   getRoleSingle: PropTypes.func,

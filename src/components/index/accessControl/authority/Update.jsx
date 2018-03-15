@@ -19,7 +19,6 @@ class Update extends Component {
       data: undefined,
       id: undefined
     }
-    this.props.getAuthoritySingle()
     this.props.getPostOptions()
     this.props.getAuthorityParentTreeOptions()
   }
