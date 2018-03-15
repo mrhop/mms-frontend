@@ -115,7 +115,7 @@ export const saveAuthority = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('saveAuthority success')
+    console.log('saveAuthority success', data)
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.ACCESSCONTROL_AUTHORITY_SAVE_SUCCESS,
@@ -125,7 +125,6 @@ export const saveAuthority = (data) => (dispatch, getState) => {
     type: actionTypes.ACCESSCONTROL_AUTHORITY_SAVE_BEGIN,
   })
 }
-
 
 export const deleteAuthority = (data) => (dispatch, getState) => {
   // to server
@@ -139,5 +138,75 @@ export const deleteAuthority = (data) => (dispatch, getState) => {
   }, 300)
   return dispatch({
     type: actionTypes.ACCESSCONTROL_AUTHORITY_DELETE_BEGIN,
+  })
+}
+
+// Authority
+export const getRoleList = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    // data to server
+    console.log('getRoleList success', data)
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_LIST_GOT,
+      data: TempData.RoleTempData.list
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_ROLE_LIST_QUERY
+  })
+}
+
+export const getRoleSingle = (data) => (dispatch, getState) => {
+  // to server
+  if (data && data.id) {
+    setTimeout(function () {
+      // 根据时间段，关键条件进行过滤
+      console.log('getRoleSingle success')
+      // 此处返回快捷方式的data
+      return dispatch(Object.assign(data, {
+        type: actionTypes.ACCESSCONTROL_ROLE_SINGLE_GOT,
+        data: TempData.RoleTempData.single
+      }))
+    }, 300)
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_SINGLE_QUERY
+    })
+  } else {
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_SINGLE_INIT,
+    })
+  }
+}
+
+export const saveRole = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('saveRole success', data)
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_SAVE_SUCCESS,
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_ROLE_SAVE_BEGIN,
+  })
+}
+
+export const deleteRole = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('deleteRole success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.ACCESSCONTROL_ROLE_DELETE_SUCCESS,
+    })
+  }, 300)
+  return dispatch({
+    type: actionTypes.ACCESSCONTROL_ROLE_DELETE_BEGIN,
   })
 }

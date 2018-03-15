@@ -5,10 +5,14 @@
 import  Index from '../../components/index/Index'
 import  AccessControl from '../../components/index/accessControl'
 import  Authority from '../../components/index/accessControl/authority'
+import  AddAuthority from '../../components/index/accessControl/authority/Add'
+import  UpdateAuthority from '../../components/index/accessControl/authority/Update'
 import  Post from '../../components/index/accessControl/post'
 import  PostAdd from '../../components/index/accessControl/post/Add'
 import  PostUpdate from '../../components/index/accessControl/post/Update'
 import  Role from '../../components/index/accessControl/role'
+import  RoleAdd from '../../components/index/accessControl/role/Add'
+import  RoleUpdate from '../../components/index/accessControl/role/Update'
 import  User from '../../components/index/accessControl/user'
 import  PersonalInfo from '../../components/index/accessControl/PersonalInfo'
 export default [
@@ -26,6 +30,14 @@ export default [
         component: Authority
       },
       {
+        path: "/accesscontrol/authority/addauthority",
+        component: AddAuthority
+      },
+      {
+        path: "/accesscontrol/authority/updateauthority",
+        component: UpdateAuthority
+      },
+      {
         path: "/accesscontrol/post",
         component: Post
       },
@@ -40,6 +52,14 @@ export default [
       {
         path: "/accesscontrol/role",
         component: Role
+      },
+      {
+        path: "/accesscontrol/role/addrole",
+        component: RoleAdd
+      },
+      {
+        path: "/accesscontrol/role/updaterole",
+        component: RoleUpdate
       },
       {
         path: "/accesscontrol/user",

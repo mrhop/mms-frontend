@@ -90,12 +90,42 @@ export const availableMenu = [
       {
         key: 'authority',
         title: '权限管理',
-        url: '/accesscontrol/authority'
+        url: '/accesscontrol/authority',
+        children: [
+          {
+            key: 'addauthority',
+            title: '新增权限',
+            url: '/accesscontrol/authority/addauthority'
+          },
+          {
+            key: 'updateauthority',
+            title: '修改权限',
+            url: '/accesscontrol/authority/updateauthority'
+          },
+          {
+            key: 'authorityDelete'
+          },
+        ]
       },
       {
         key: 'role',
         title: '角色管理',
-        url: '/accesscontrol/role'
+        url: '/accesscontrol/role',
+        children: [
+          {
+            key: 'addrole',
+            title: '新增权限',
+            url: '/accesscontrol/role/addrole'
+          },
+          {
+            key: 'updaterole',
+            title: '修改权限',
+            url: '/accesscontrol/role/updaterole'
+          },
+          {
+            key: 'roleDelete'
+          },
+        ]
       },
       {
         key: 'user',
@@ -360,7 +390,34 @@ export const optionsTempData = {
       value: 4,
       text: '库存审核',
     },
-  ]
+  ],
+  authorityParent: [
+    {
+      text: '访问控制',
+      value: 'accesscontrol',
+      children: [{
+        text: '职位管理',
+        value: 'post'
+      }]
+    }],
+  authorityParentTree: [{
+    label: 'Node1',
+    value: '0-0',
+    key: '0-0',
+    children: [{
+      label: 'Child Node1',
+      value: '0-0-1',
+      key: '0-0-1',
+    }, {
+      label: 'Child Node2',
+      value: '0-0-2',
+      key: '0-0-2',
+    }],
+  }, {
+    label: 'Node2',
+    value: '0-1',
+    key: '0-1',
+  }]
 }
 
 // post folder
@@ -418,10 +475,48 @@ export const AuthorityTempData = {
   single: {
     id: 1,
     name: '采购处理',
-    post: '采购',
-    parent: '采购管理',
+    post: 3,
+    parent: '0-0-1',
     url: '/purchase',
-    inMenu: false
+    inMenu: true
   }
+}
+
+
+export const RoleTempData = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
+      roleCode: 'ROLE_purchase',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      roleCode: 'ROLE_purchaseAudit',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      roleCode: 'ROLE_store',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      roleCode: 'ROLE_storeAudit',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    roleCode: 'purchase',
+    authorities: ['0-0', '0-0-1','0 - 1'],
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
 }
 

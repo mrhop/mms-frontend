@@ -25,7 +25,7 @@ class Add extends Component {
   componentWillReceiveProps(nextProps) {
     const {type} = nextProps
     if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_SUCCESS) {
-      history.go(-1)
+      history.push('/accesscontrol/post')
     } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
       this.setState({loading: false})
     }
