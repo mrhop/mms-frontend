@@ -36,5 +36,15 @@ const accountValidate = (rule, value, callback) => {
   }
 }
 
+const positiveIntValidate = (rule, value, callback) => {
+  // 统一正则
+  const reg = /^[1-9][0-9]*?$/
+  if (value && !reg.test(value)) {
+    callback('请填写正整数');
+  } else {
+    callback();
+  }
+}
 
-export {ipValidate, portValidate, accountValidate}
+
+export {ipValidate, portValidate, accountValidate, positiveIntValidate}

@@ -5,6 +5,7 @@ import leftMenu from './leftMenu'
 import indexData from './indexData'
 import options from './options'
 import accessControlData from './accessControl'
+import systemInfoData from './systemInfo'
 
 const indexApp = {
   locationChange,
@@ -13,7 +14,8 @@ const indexApp = {
   leftMenu,
   indexData,
   ...options,
-  ...accessControlData
+  ...accessControlData,
+  ...systemInfoData
 }
 
 export default indexApp

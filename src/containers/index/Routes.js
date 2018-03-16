@@ -17,6 +17,16 @@ import  User from '../../components/index/accessControl/user'
 import  UserAdd from '../../components/index/accessControl/user/Add'
 import  UserUpdate from '../../components/index/accessControl/user/Update'
 import  PersonalInfo from '../../components/index/accessControl/PersonalInfo'
+// SYSTEM INFO
+import  SystemInfo from '../../components/index/systemInfo'
+import  CompanyInfo from '../../components/index/systemInfo/CompanyInfo'
+import  Database from '../../components/index/systemInfo/Database'
+import  SystemSetting from '../../components/index/systemInfo/SystemSetting'
+import  SaleStrategy from '../../components/index/systemInfo/saleStrategy'
+import  SaleStrategyAdd from '../../components/index/systemInfo/saleStrategy/Add'
+import  SaleStrategyUpdate from '../../components/index/systemInfo/saleStrategy/Update'
+import  ReportDesign from '../../components/index/systemInfo/ReportDesign'
+
 export default [
   {
     path: "/",
@@ -80,5 +90,40 @@ export default [
         component: PersonalInfo
       }
     ]
+  },
+  {
+    path: "/systeminfo",
+    component: SystemInfo,
+    routes: [
+      {
+        path: "/systeminfo/systemsetting",
+        component: SystemSetting
+      },
+      {
+        path: "/systeminfo/companyinfo",
+        component: CompanyInfo
+      },
+      {
+        path: "/systeminfo/database",
+        component: Database
+      },
+      {
+        path: "/systeminfo/salestrategy",
+        component: SaleStrategy
+      },
+      {
+        path: "/systeminfo/salestrategy/addsalestrategy",
+        component: SaleStrategyAdd
+      },
+      {
+        path: "/systeminfo/salestrategy/updatesalestrategy",
+        component: SaleStrategyUpdate
+      },
+      {
+        path: "/systeminfo/reportdesign",
+        component: ReportDesign
+      }
+    ]
+
   }
 ];

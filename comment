@@ -4,6 +4,8 @@ npm --registry https://registry.npm.taobao.org install -g node-sass
 1.需要一个link 对应关系表，以及对应的url拼接规则--比如在header的应处理任务部分 对应 index/header/LoginInfo.jsx/<Popover placement="bottom"
 
 
-明天
-1.首页基本完事
-2.开始访问控制页面的实现
+// 两段下载的考虑
+// 参考 https://segmentfault.com/a/1190000005863250
+// 因为这个没有准备的过程，所以直接给出链接下载，但是需要注意权限问题
+// 当需要收集准备数据时，第一步生成数据，返回url，第二步进行直接的下载，因为下载的很慢，所以在本地准备临时文件，然后第二步下载时根据链接请求到临时数据，下载完成后进行临时文件的删除，保证链接的一次性
+

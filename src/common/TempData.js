@@ -56,13 +56,47 @@ export const leftMenu = [
         url: '/accesscontrol/personalinfo'
       }
     ]
-  }]
+  }, {
+    key: 'systeminfo',
+    title: '系统信息维护',
+    icon: 'setting',
+    url: '/systeminfo',
+    children: [
+      {
+        key: 'systemsetting',
+        title: '系统设置',
+        url: '/systeminfo/systemsetting'
+      },
+      {
+        key: 'companyinfo',
+        title: '企业信息管理',
+        url: '/systeminfo/companyinfo'
+      },
+      {
+        key: 'database',
+        title: '备份/还原数据库',
+        url: '/systeminfo/database'
+      },
+      {
+        key: 'salestrategy',
+        title: '销售策略管理',
+        url: '/systeminfo/salestrategy'
+      },
+      {
+        key: 'reportdesign',
+        title: '报表设计',
+        url: "/systeminfo/reportdesign",
+      }
+    ]
+  }
+]
 export const availableMenu = [
   {
     key: 'index',
     title: '概览',
     url: '/'
-  }, {
+  },
+  {
     key: 'accesscontrol',
     url: '/accesscontrol',
     title: '访问控制',
@@ -151,6 +185,53 @@ export const availableMenu = [
         key: 'personalinfo',
         title: '个人信息维护',
         url: '/accesscontrol/personalinfo'
+      }
+    ]
+  },
+  {
+    key: 'systeminfo',
+    url: '/systeminfo',
+    title: '系统信息维护',
+    children: [
+      {
+        key: 'systemsetting',
+        title: '系统设置',
+        url: '/systeminfo/systemsetting'
+      },
+      {
+        key: 'companyinfo',
+        title: '企业信息管理',
+        url: '/systeminfo/companyinfo'
+      },
+      {
+        key: 'database',
+        title: '备份/还原数据库',
+        url: '/systeminfo/database'
+      },
+      {
+        key: 'salestrategy',
+        title: '销售策略管理',
+        url: '/systeminfo/salestrategy',
+        children: [
+          {
+            key: 'addsalestrategy',
+            title: '新增用户',
+            url: '/systeminfo/salestrategy/addsalestrategy'
+          },
+          {
+            key: 'updatesalestrategy',
+            title: '修改用户',
+            url: '/systeminfo/salestrategy/updatesalestrategy'
+          },
+          {
+            key: 'salestrategyDelete'
+          },
+        ]
+      },
+      {
+        key: 'reportdesign',
+        title: '报表设计',
+        url: "/systeminfo/reportdesign",
       }
     ]
   }]
@@ -451,7 +532,7 @@ export const optionsTempData = {
     }]
 }
 
-// post folder
+// accessControl
 export const PostTempData = {
   list: [
     {
@@ -596,4 +677,113 @@ export const UserTempData = {
   }
 
 }
+
+// systemInfo
+export const SystemSettingTempData = {
+  single: {
+    id: 1,
+    automaticProductNumber: true,
+    costPriceStrategy: 0,
+    salePriceFloating: 12,
+    dumpBackupRate: 4,
+    expiryAlert: 10,
+  }
+}
+export const CompanyInfoTempData = {
+  single: {
+    id: 1,
+    name: 'XX公司',
+    legalPerson: 'XXX',
+    contactName: 'XXX',
+    post: '总经理',
+    cellphone: '13111111111',
+    email: 'a@a.com',
+    description: '主营五金化工,建材等'
+  }
+}
+export const DatabaseTempData = {
+  list: [
+    {
+      key: 1,
+      name: 'dump20181111-12:13.dump',
+      backupDate: 1521188887000
+    },
+    {
+      key: 2,
+      name: 'dump20181111-12:14.dump',
+      backupDate: 1521188972000
+    },
+    {
+      key: 3,
+      name: 'dump20181111-12:15.dump',
+      backupDate: 1521188981000
+    },
+    {
+      key: 4,
+      name: 'dump20181111-12:16.dump',
+      backupDate: 1521188989000
+    },
+    {
+      key: 5,
+      name: 'dump20181111-12:19.dump',
+      backupDate: 1521188999000
+    }
+  ]
+}
+export const SaleStrategyData = {
+  list: [
+    {
+      key: 1,
+      name: '采购员',
+      account: 'purchaser1',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111111',
+      email: 'a@a.com',
+      address: 'XX路',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购员2',
+      account: 'purchaser2',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111112',
+      email: 'a@ac.com',
+      address: 'XX路'
+    },
+    {
+      key: 3,
+      name: '采购员3',
+      account: 'purchaser3',
+      roles: '采购管理',
+      post: '采购',
+      cellphone: '1311111113',
+      email: 'a@ad.com',
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购员1',
+    account: 'purchaser1',
+    roles: [1, 2],
+    rolesName: ['采购管理', '库存处理'],
+    post: 1,
+    postName: '采购',
+    email: 'a@a.com',
+    cellphone: '13111111111',
+    address: 'XX路',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const ReportDesignTempData = {
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+}
+
 
