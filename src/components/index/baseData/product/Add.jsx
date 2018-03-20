@@ -5,13 +5,12 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin} from 'antd';
+import {Form, Icon, Input, Button, TreeSelect, Col, Alert, Select, Checkbox, Spin} from 'antd';
 
 import {history} from '../../../../redux/index/store'
-import {accessControlActions} from '../../../../redux/index/actions'
+import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
-
 
 class Add extends Component {
   constructor(props) {
@@ -19,15 +18,20 @@ class Add extends Component {
     this.state = {
       loading: false
     }
-    this.props.getPostSingle()
+    this.props.getProductCategorySingle()
+    this.props.getProductCategoryParentTreeOptions()
   }
 
   componentWillReceiveProps(nextProps) {
-    const {type} = nextProps
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_SUCCESS) {
-      history.push('/accesscontrol/post')
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    const {type, data} = nextProps
+    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_SUCCESS) {
+      history.push('/basedata/productcategory')
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_FAILURE) {
       this.setState({loading: false})
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_OPTIONS_GOT) {
+      this.setState({postOptions: data})
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT) {
+      this.setState({productCategoryParentOptions: data})
     }
   }
 
@@ -40,19 +44,19 @@ class Add extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
-        this.props.savePost(values)
+        this.props.saveProductCategory(values)
       }
     });
   }
 
   render() {
-    const {loading} = this.state
+    const {loading, productCategoryParentOptions} = this.state
+
     const {type} = this.props
     const FormItem = Form.Item
-    const {TextArea} = Input;
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"
@@ -64,18 +68,24 @@ class Add extends Component {
                  spinning={loading}>
       {alertMsg}
       <Form onSubmit={this.submitFun}>
-        <FormItem label="职位名称" {...formItemLayout}>
-          {getFieldDecorator('name', {
-            rules: [{
-              required: true, message: '必选字段!'
-            }],
-          })(
-            <Input placeholder="职位名称"/>
+        <FormItem label="名称" {...formItemLayout}>
+          {getFieldDecorator('name',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="名称"/>
           )}
         </FormItem>
-        <FormItem label="详细说明" {...formItemLayout}>
-          {getFieldDecorator('description')(
-            <TextArea placeholder="详细说明"/>
+        <FormItem label="上级分类" {...formItemLayout}>
+          {getFieldDecorator('parent')(
+            <TreeSelect
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              treeData={productCategoryParentOptions}
+              placeholder="上级分类"
+              allowClear
+            />
           )}
         </FormItem>
         <FormItem {...formItemTailLayout}>
@@ -91,18 +101,23 @@ class Add extends Component {
 Add.propTypes = {
   location: PropTypes.object,
   type: PropTypes.string,
-  savePost: PropTypes.func,
-  getPostSingle: PropTypes.func,
-  form: PropTypes.object.isRequired,
+  data: PropTypes.any,
+  saveProductCategory: PropTypes.func,
+  getProductCategorySingle: PropTypes.func,
+  getProductCategoryParentTreeOptions: PropTypes.func,
+  form: PropTypes.object.isRequired
 }
 
 
 const mapStateToProps = (state) => {
-  return {...state.accessControlPostSingle}
+  return {
+    ...state.baseDataProductCategorySingle,
+    ...state.baseDataProductCategoryParentTreeOptions
+  }
 }
 
 const mapDispatchToProps = {
-  ...accessControlActions
+  ...baseDataActions, ...optionActions
 }
 const AddProxy = connect(
   mapStateToProps,

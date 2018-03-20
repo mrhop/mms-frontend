@@ -1001,29 +1001,28 @@ export const product = {
   list: [
     {
       key: 1,
-      name: '采购处理',
-      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+      name: '小黄鱼',
+      code: 'p12332211123',
+      productCategory: '海鲜',
+      costPrice: 12.3,
+      salePrice: 15.3
     },
     {
       key: 2,
-      name: '采购审核',
-      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
-    },
-    {
-      key: 3,
-      name: '库存处理',
-      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
-    },
-    {
-      key: 4,
-      name: '库存审核',
-      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
-    },
+      name: '小饼干',
+      code: 'p123322111233',
+      productCategory: '饼干',
+      costPrice: 13.3,
+      salePrice: 16.3
+    }
   ],
   single: {
     id: 1,
-    name: '采购处理',
-    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    name: '小黄鱼',
+    code: 'p12332211123',
+    productCategory: '2',
+    costPrice: 12.3,
+    salePrice: 15.3
   }
 
 }

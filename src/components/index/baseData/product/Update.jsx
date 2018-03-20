@@ -5,29 +5,29 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin} from 'antd';
+import {Form, Icon, Input, Button, TreeSelect, Col, Alert, Select, Checkbox, Spin} from 'antd';
 
 import {history} from '../../../../redux/index/store'
-import {accessControlActions} from '../../../../redux/index/actions'
+import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
-
 
 class Update extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
       data: undefined,
       id: undefined
     }
+    this.props.getProductCategoryParentTreeOptions()
   }
 
   componentWillMount() {
     const {location} = this.props
     if (location.state && location.state.id) {
       this.setState({id: location.state.id})
-      this.props.getPostSingle({id: location.state.id})
+      this.props.getProductCategorySingle({id: location.state.id})
     } else {
       window.location.href = '/'
     }
@@ -35,12 +35,16 @@ class Update extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.ACCESSCONTROL_POST_SINGLE_GOT) {
+    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SINGLE_GOT) {
       this.setState({loading: false, data})
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_SUCCESS) {
-      history.push('/accesscontrol/post')
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SINGLE_FAILURE || type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_SUCCESS) {
+      history.push('/basedata/productcategory')
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_FAILURE) {
       this.setState({loading: false})
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_OPTIONS_GOT) {
+      this.setState({postOptions: data})
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT) {
+      this.setState({productCategoryParentOptions: data})
     }
   }
 
@@ -53,26 +57,26 @@ class Update extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
-        this.props.savePost(values)
+        this.props.saveProductCategory(values)
       }
     });
   }
 
   render() {
-    const {loading, data, id} = this.state
+    const {loading, data, id, productCategoryParentOptions} = this.state
+
     const {type} = this.props
     const FormItem = Form.Item
-    const {TextArea} = Input;
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
-    if (type === ActionTypes.ACCESSCONTROL_POST_SINGLE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SINGLE_FAILURE) {
       alertMsg = <Alert
         message="获取失败"
         description="失败原因，后台传回"
         type="error"
         showIcon
       />
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"
@@ -80,7 +84,6 @@ class Update extends Component {
         showIcon
       />
     }
-
     if (id) {
       return <Spin style={{width:'100%'}} tip="处理中"
                    spinning={loading}>
@@ -93,21 +96,27 @@ class Update extends Component {
               <Input type="hidden" name='id'/>
             )}
           </FormItem>
-          <FormItem label="职位名称" {...formItemLayout}>
-            {getFieldDecorator('name', {
-              initialValue: data && data.name,
-              rules: [{
-                required: true, message: '必选字段!'
-              }],
-            })(
-              <Input placeholder="职位名称"/>
+          <FormItem label="名称" {...formItemLayout}>
+            {getFieldDecorator('name',
+              {
+                initialValue: data && data.name,
+                rules: [{
+                  required: true, message: '必选字段!'
+                }],
+              })(
+              <Input placeholder="名称"/>
             )}
           </FormItem>
-          <FormItem label="详细说明" {...formItemLayout}>
-            {getFieldDecorator('description', {
-              initialValue: data && data.description,
+          <FormItem label="上级分类" {...formItemLayout}>
+            {getFieldDecorator('parent', {
+              initialValue: data && data.parent,
             })(
-              <TextArea placeholder="详细说明"/>
+              <TreeSelect
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                treeData={productCategoryParentOptions}
+                placeholder="上级分类"
+                allowClear
+              />
             )}
           </FormItem>
           <FormItem {...formItemTailLayout}>
@@ -125,19 +134,23 @@ class Update extends Component {
 Update.propTypes = {
   location: PropTypes.object,
   type: PropTypes.string,
-  data: PropTypes.object,
-  getPostSingle: PropTypes.func,
-  savePost: PropTypes.func,
-  form: PropTypes.object.isRequired,
+  data: PropTypes.any,
+  saveProductCategory: PropTypes.func,
+  getProductCategorySingle: PropTypes.func,
+  getProductCategoryParentTreeOptions: PropTypes.func,
+  form: PropTypes.object.isRequired
 }
 
 
 const mapStateToProps = (state) => {
-  return {...state.accessControlPostSingle}
+  return {
+    ...state.baseDataProductCategorySingle,
+    ...state.baseDataProductCategoryParentTreeOptions
+  }
 }
 
 const mapDispatchToProps = {
-  ...accessControlActions
+  ...baseDataActions, ...optionActions
 }
 const UpdateProxy = connect(
   mapStateToProps,

@@ -76,7 +76,7 @@ export const getProductList = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('getProductList success')
+    console.log('getProductList success', data)
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.BASEDATA_PRODUCT_LIST_GOT,
