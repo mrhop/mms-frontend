@@ -45,6 +45,15 @@ const positiveIntValidate = (rule, value, callback) => {
     callback();
   }
 }
+const positiveNumberValidate = (rule, value, callback) => {
+  // 统一正则
+  const reg = /^[0-9]\d*(\.\d+)?$/
+  if (value !== '' && value !== undefined && value !== null && ((value * 1 === 0) || !reg.test(value))) {
+    callback('请填写大于0的数字');
+  } else {
+    callback();
+  }
+}
 
 
-export {ipValidate, portValidate, accountValidate, positiveIntValidate}
+export {ipValidate, portValidate, accountValidate, positiveIntValidate, positiveNumberValidate}

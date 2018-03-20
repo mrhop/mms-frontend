@@ -7,6 +7,7 @@ import * as indexData from './indexData'
 import * as options from './options'
 import * as accessControl from './accessControl'
 import * as systemInfo from './systemInfo'
+import * as baseData from './baseData'
 
 export const shortcutActions = shortcut
 export const loginInfoActions = loginInfo
@@ -15,3 +16,4 @@ export const indexDataActions = indexData
 export const optionActions = options
 export const accessControlActions = accessControl
 export const systemInfoActions = systemInfo
+export const baseDataActions = baseData

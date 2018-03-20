@@ -6,11 +6,10 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import {Link} from 'react-router-dom'
-import DateFormat from 'dateformat'
 
 import {Table, Spin, Divider, Modal} from 'antd';
 const confirm = Modal.confirm
-import {systemInfoActions} from '../../../../redux/index/actions'
+import {accessControlActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 
 
@@ -21,64 +20,35 @@ class Index extends Component {
       loading: true,
       data: []
     }
-    this.props.getSaleStrategyList()
+    this.props.getPostList()
   }
 
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.SYSTEMINFO_SALESTRATEGY_LIST_GOT) {
+    if (type === ActionTypes.ACCESSCONTROL_POST_LIST_GOT || type === ActionTypes.ACCESSCONTROL_POST_DELETE_SUCCESS) {
       this.setState({loading: false, data})
-    } else if (type === ActionTypes.SYSTEMINFO_SALESTRATEGY_LIST_FAILURE) {
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_LIST_FAILURE) {
       this.setState({loading: false})
-    } else if (type === ActionTypes.SYSTEMINFO_SALESTRATEGY_DELETE_BEGIN) {
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_DELETE_BEGIN) {
       this.setState({loading: true})
-    } else if (type === ActionTypes.SYSTEMINFO_SALESTRATEGY_DELETE_SUCCESS) {
-      this.props.getSaleStrategyList()
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_DELETE_SUCCESS) {
+      this.props.getPostList()
     }
   }
-
+  
   columns = [
     {
       title: '名称',
       dataIndex: 'name',
       key: 'name'
-    },
-    {
-      title: '起始时间',
-      dataIndex: 'beginDate',
-      key: 'beginDate',
-      sorter: (a, b) => a.beginDate - b.beginDate,
-      render: text => text && DateFormat(new Date(text), "yyyy-mm-dd"),
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
-      sorter: (a, b) => a.endDate - b.endDate,
-      render: text => text && DateFormat(new Date(text), "yyyy-mm-dd"),
-    },
-    {
-      title: '下限（元）',
-      dataIndex: 'lowerLimit',
-      key: 'lowerLimit'
-    },
-    {
-      title: '折扣',
-      dataIndex: 'discount',
-      key: 'discount'
-    },
-    {
-      title: '减免',
-      dataIndex: 'fullCut',
-      key: 'fullCut'
     }, {
       title: '操作',
       key: 'action',
       render: (text, record) => (
         <span>
             <Link to={{
-              pathname: '/systeminfo/salestrategy/updatesalestrategy',
+              pathname: '/accesscontrol/post/updatepost',
               state: { id: record.key }
             }}>修改</Link>
             <Divider type="vertical"/>
@@ -93,7 +63,7 @@ class Index extends Component {
       content: '该记录删除不恢复',
       okType: 'danger',
       onOk: (() => {
-        this.props.deleteSaleStrategy(id)
+        this.props.deletePost(id)
       }).bind(this),
       onCancel() {
         console.log('Cancel');
@@ -106,7 +76,7 @@ class Index extends Component {
     const {loading, data} = this.state;
     return <Fragment>
       <div className="actions"><Link className="button"
-                                     to="/systeminfo/salestrategy/addsalestrategy"><span>新增策略</span></Link></div>
+                                     to="/accesscontrol/post/addpost"><span>新增职位</span></Link></div>
       <hr/>
       <div className="lists">
         <Spin style={{width:'100%'}} tip="处理中"
@@ -125,17 +95,17 @@ class Index extends Component {
 Index.propTypes = {
   type: PropTypes.string,
   data: PropTypes.array,
-  getSaleStrategyList: PropTypes.func,
-  deleteSaleStrategy: PropTypes.func
+  getPostList: PropTypes.func,
+  deletePost: PropTypes.func
 }
 
 
 const mapStateToProps = (state) => {
-  return {...state.systemInfoSaleStrategyList}
+  return {...state.accessControlPostList}
 }
 
 const mapDispatchToProps = {
-  ...systemInfoActions
+  ...accessControlActions
 }
 const IndexProxy = connect(
   mapStateToProps,

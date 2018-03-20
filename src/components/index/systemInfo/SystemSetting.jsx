@@ -12,7 +12,7 @@ const Option = Select.Option;
 import {systemInfoActions} from '../../../redux/index/actions'
 import * as ActionTypes from '../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../common/FormLayout';
-import {positiveIntValidate} from '../../../common/FormValidate';
+import {positiveNumberValidate} from '../../../common/FormValidate';
 
 
 class Update extends Component {
@@ -121,7 +121,7 @@ class Update extends Component {
             rules: [{
               required: true, message: '必选字段!'
             }, {
-              validator: positiveIntValidate
+              validator: positiveNumberValidate
             }],
           })(
             <Input addonAfter={"%"}/>
@@ -149,7 +149,7 @@ class Update extends Component {
             rules: [{
               required: true, message: '必选字段!'
             }, {
-              validator: positiveIntValidate
+              validator: positiveNumberValidate
             }],
           })(
             <Input addonAfter={"天"}/>

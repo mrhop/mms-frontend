@@ -55,3 +55,29 @@ export const getRoleOptions = (data) => (dispatch, getState) => {
     })
   }, 300)
 }
+
+export const getProductCategoryParentOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getProductCategoryParentOptions option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_OPTIONS_GOT,
+      data: TempData.optionsTempData.productCategoryParent
+    })
+  }, 300)
+}
+
+export const getProductCategoryParentTreeOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getProductCategoryParentTreeOptions option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT,
+      data: TempData.optionsTempData.productCategoryParentTree
+    })
+  }, 300)
+}

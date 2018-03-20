@@ -6,6 +6,7 @@ import indexData from './indexData'
 import options from './options'
 import accessControlData from './accessControl'
 import systemInfoData from './systemInfo'
+import baseDataData from './baseData'
 
 const indexApp = {
   locationChange,
@@ -15,7 +16,8 @@ const indexApp = {
   indexData,
   ...options,
   ...accessControlData,
-  ...systemInfoData
+  ...systemInfoData,
+  ...baseDataData
 }
 
 export default indexApp

@@ -3,6 +3,7 @@
  */
 // Index
 import  Index from '../../components/index/Index'
+// access control
 import  AccessControl from '../../components/index/accessControl'
 import  Authority from '../../components/index/accessControl/authority'
 import  AddAuthority from '../../components/index/accessControl/authority/Add'
@@ -26,7 +27,26 @@ import  SaleStrategy from '../../components/index/systemInfo/saleStrategy'
 import  SaleStrategyAdd from '../../components/index/systemInfo/saleStrategy/Add'
 import  SaleStrategyUpdate from '../../components/index/systemInfo/saleStrategy/Update'
 import  ReportDesign from '../../components/index/systemInfo/ReportDesign'
-
+// BASE DATA
+import  BaseData from '../../components/index/baseData'
+import  Client from '../../components/index/baseData/client'
+import  AddClient from '../../components/index/baseData/client/Add'
+import  UpdateClient from '../../components/index/baseData/client/Update'
+import  Employee from '../../components/index/baseData/employee'
+import  EmployeeAdd from '../../components/index/baseData/employee/Add'
+import  EmployeeUpdate from '../../components/index/baseData/employee/Update'
+import  Product from '../../components/index/baseData/product'
+import  ProductAdd from '../../components/index/baseData/product/Add'
+import  ProductUpdate from '../../components/index/baseData/product/Update'
+import  ProductCategory from '../../components/index/baseData/productCategory'
+import  ProductCategoryAdd from '../../components/index/baseData/productCategory/Add'
+import  ProductCategoryUpdate from '../../components/index/baseData/productCategory/Update'
+import  Store from '../../components/index/baseData/store'
+import  StoreAdd from '../../components/index/baseData/store/Add'
+import  StoreUpdate from '../../components/index/baseData/store/Update'
+import  Supplier from '../../components/index/baseData/supplier'
+import  SupplierAdd from '../../components/index/baseData/supplier/Add'
+import  SupplierUpdate from '../../components/index/baseData/supplier/Update'
 export default [
   {
     path: "/",
@@ -125,5 +145,83 @@ export default [
       }
     ]
 
-  }
+  },
+  {
+    path: "/basedata",
+    component: BaseData,
+    routes: [
+      {
+        path: "/basedata/client",
+        component: Client
+      },
+      {
+        path: "/basedata/client/addclient",
+        component: AddClient
+      },
+      {
+        path: "/basedata/client/updateclient",
+        component: UpdateClient
+      },
+      {
+        path: "/basedata/employee",
+        component: Employee
+      },
+      {
+        path: "/basedata/employee/addemployee",
+        component: EmployeeAdd
+      },
+      {
+        path: "/basedata/employee/updateemployee",
+        component: EmployeeUpdate
+      },
+      {
+        path: "/basedata/product",
+        component: Product
+      },
+      {
+        path: "/basedata/product/addproduct",
+        component: ProductAdd
+      },
+      {
+        path: "/basedata/product/updateproduct",
+        component: ProductUpdate
+      },
+      {
+        path: "/basedata/productcategory",
+        component: ProductCategory
+      },
+      {
+        path: "/basedata/productcategory/addproductcategory",
+        component: ProductCategoryAdd
+      },
+      {
+        path: "/basedata/productcategory/updateproductcategory",
+        component: ProductCategoryUpdate
+      },
+      {
+        path: "/basedata/store",
+        component: Store
+      },
+      {
+        path: "/basedata/store/addstore",
+        component: StoreAdd
+      },
+      {
+        path: "/basedata/store/updatestore",
+        component: StoreUpdate
+      },
+      {
+        path: "/basedata/supplier",
+        component: Supplier
+      },
+      {
+        path: "/basedata/supplier/addsupplier",
+        component: SupplierAdd
+      },
+      {
+        path: "/basedata/supplier/updatesupplier",
+        component: SupplierUpdate
+      }
+    ]
+  },
 ];

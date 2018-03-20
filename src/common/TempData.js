@@ -24,7 +24,8 @@ export const leftMenu = [
     title: '概览',
     icon: 'dashboard',
     url: '/'
-  }, {
+  },
+  {
     key: 'accesscontrol',
     title: '访问控制',
     icon: 'user',
@@ -56,7 +57,8 @@ export const leftMenu = [
         url: '/accesscontrol/personalinfo'
       }
     ]
-  }, {
+  },
+  {
     key: 'systeminfo',
     title: '系统信息维护',
     icon: 'setting',
@@ -88,7 +90,45 @@ export const leftMenu = [
         url: "/systeminfo/reportdesign",
       }
     ]
-  }
+  },
+  {
+    key: 'basedata',
+    title: '基础数据维护',
+    icon: 'database',
+    url: '/basedata',
+    children: [
+      {
+        key: 'productcategory',
+        title: '产品分类管理',
+        url: '/basedata/productcategory'
+      },
+      {
+        key: 'product',
+        title: '产品管理',
+        url: '/basedata/product'
+      },
+      {
+        key: 'store',
+        title: '仓库管理',
+        url: '/basedata/store'
+      },
+      {
+        key: 'supplier',
+        title: '供货商管理',
+        url: '/basedata/supplier'
+      },
+      {
+        key: 'client',
+        title: '客户管理',
+        url: '/basedata/client'
+      },
+      {
+        key: 'employee',
+        title: '业务员管理',
+        url: '/basedata/employee'
+      }
+    ]
+  },
 ]
 export const availableMenu = [
   {
@@ -113,7 +153,7 @@ export const availableMenu = [
           },
           {
             key: 'updatepost',
-            title: '修改职位',
+            title: '更新职位',
             url: '/accesscontrol/post/updatepost'
           },
           {
@@ -133,7 +173,7 @@ export const availableMenu = [
           },
           {
             key: 'updateauthority',
-            title: '修改权限',
+            title: '更新权限',
             url: '/accesscontrol/authority/updateauthority'
           },
           {
@@ -149,11 +189,11 @@ export const availableMenu = [
           {
             key: 'addrole',
             title: '新增权限',
-            url: '/accesscontrol/role/addrole'
+            url: '/accesscontrol/role/addrole',
           },
           {
             key: 'updaterole',
-            title: '修改权限',
+            title: '更新权限',
             url: '/accesscontrol/role/updaterole'
           },
           {
@@ -173,7 +213,7 @@ export const availableMenu = [
           },
           {
             key: 'updateuser',
-            title: '修改用户',
+            title: '更新用户',
             url: '/accesscontrol/user/updateuser'
           },
           {
@@ -215,12 +255,12 @@ export const availableMenu = [
         children: [
           {
             key: 'addsalestrategy',
-            title: '新增用户',
+            title: '新增策略',
             url: '/systeminfo/salestrategy/addsalestrategy'
           },
           {
             key: 'updatesalestrategy',
-            title: '修改用户',
+            title: '更新策略',
             url: '/systeminfo/salestrategy/updatesalestrategy'
           },
           {
@@ -234,7 +274,135 @@ export const availableMenu = [
         url: "/systeminfo/reportdesign",
       }
     ]
-  }]
+  },
+  {
+    key: 'basedata',
+    title: '基础数据维护',
+    url: '/basedata',
+    children: [
+      {
+        key: 'productcategory',
+        title: '产品分类管理',
+        url: '/basedata/productcategory',
+        children: [
+          {
+            key: 'addproductcategory',
+            title: '新增产品分类',
+            url: '/basedata/productcategory/addproductcategory'
+          },
+          {
+            key: 'updateproductcategory',
+            title: '更新产品分类',
+            url: '/basedata/productcategory/updateproductcategory'
+          },
+          {
+            key: 'productcategoryDelete'
+          },
+        ]
+      },
+      {
+        key: 'product',
+        title: '产品管理',
+        url: '/basedata/product',
+        children: [
+          {
+            key: 'addproduct',
+            title: '新增产品',
+            url: '/basedata/product/addproduct'
+          },
+          {
+            key: 'updateproduct',
+            title: '更新产品',
+            url: '/basedata/product/updateproduct'
+          },
+          {
+            key: 'productDelete'
+          },
+        ]
+      },
+      {
+        key: 'store',
+        title: '仓库管理',
+        url: '/basedata/store',
+        children: [
+          {
+            key: 'addstore',
+            title: '新增仓库',
+            url: '/basedata/store/addstore'
+          },
+          {
+            key: 'updatestore',
+            title: '更新仓库',
+            url: '/basedata/store/updatestore'
+          },
+          {
+            key: 'storeDelete'
+          },
+        ]
+      },
+      {
+        key: 'supplier',
+        title: '供货商管理',
+        url: '/basedata/supplier',
+        children: [
+          {
+            key: 'addsupplier',
+            title: '新增供货商',
+            url: '/basedata/supplier/addsupplier'
+          },
+          {
+            key: 'updatesupplier',
+            title: '更新供货商',
+            url: '/basedata/supplier/updatesupplier'
+          },
+          {
+            key: 'supplierDelete'
+          },
+        ]
+      },
+      {
+        key: 'client',
+        title: '客户管理',
+        url: '/basedata/client',
+        children: [
+          {
+            key: 'addclient',
+            title: '新增客户',
+            url: '/basedata/client/addclient'
+          },
+          {
+            key: 'updateclient',
+            title: '更新客户',
+            url: '/basedata/client/updateclient'
+          },
+          {
+            key: 'clientDelete'
+          },
+        ]
+      },
+      {
+        key: 'employee',
+        title: '业务员管理',
+        url: '/basedata/employee',
+        children: [
+          {
+            key: 'addemployee',
+            title: '新增业务员',
+            url: '/basedata/employee/addemployee'
+          },
+          {
+            key: 'updateemployee',
+            title: '更新业务员',
+            url: '/basedata/employee/addemployee'
+          },
+          {
+            key: 'employeeDelete'
+          },
+        ]
+      }
+    ]
+  }
+]
 
 export function validateAuthority(key) {
   return validateAuthorityIterate(key, availableMenu)
@@ -265,7 +433,7 @@ export const user = {
 
 export const shortcut = [
   {
-    label: '个人信息修改',
+    label: '个人信息更新',
     value: '/accesscontrol/personalinfo'
   }
 ]
@@ -496,28 +664,30 @@ export const optionsTempData = {
         value: 'post'
       }]
     }],
-  authorityParentTree: [{
-    label: 'Node1',
-    value: '0-0',
-    key: '0-0',
-    children: [{
-      label: 'Child Node1',
-      value: '0-0-1',
-      key: '0-0-1',
+  authorityParentTree: [
+    {
+      label: 'Node1',
+      value: '0-0',
+      key: '0-0',
+      children: [{
+        label: 'Child Node1',
+        value: '0-0-1',
+        key: '0-0-1',
+      }, {
+        label: 'Child Node2',
+        value: '0-0-2',
+        key: '0-0-2',
+      }],
     }, {
-      label: 'Child Node2',
-      value: '0-0-2',
-      key: '0-0-2',
+      label: 'Node2',
+      value: '0-1',
+      key: '0-1',
     }],
-  }, {
-    label: 'Node2',
-    value: '0-1',
-    key: '0-1',
-  }],
-  role: [{
-    value: 1,
-    text: '采购处理',
-  },
+  role: [
+    {
+      value: 1,
+      text: '采购处理',
+    },
     {
       value: 2,
       text: '采购审核',
@@ -529,6 +699,33 @@ export const optionsTempData = {
     {
       value: 4,
       text: '库存审核',
+    }],
+  productCategoryParent: [
+    {
+      text: '食品',
+      value: 1,
+      children: [{
+        text: '生鲜',
+        value: 2
+      }, {
+        text: '饼干',
+        value: 3
+      }]
+    }],
+  productCategoryParentTree: [
+    {
+      label: '食品',
+      value: '1',
+      key: 1,
+      children: [{
+        label: '生鲜',
+        value: '2',
+        key: 2,
+      }, {
+        label: '饼干',
+        value: '3',
+        key: 3,
+      }],
     }]
 }
 
@@ -734,56 +931,222 @@ export const SaleStrategyData = {
   list: [
     {
       key: 1,
-      name: '采购员',
-      account: 'purchaser1',
-      roles: '采购管理',
-      post: '采购',
-      cellphone: '1311111111',
-      email: 'a@a.com',
-      address: 'XX路',
+      name: '周末特价',
+      beginDate: 1521188887000,
+      endDate: 1521188887000,
+      lowerLimit: 500,
+      discount: 0.3,
+      description: '某节日特价促销'
+    },
+    {
+      key: 2,
+      name: '中秋特价',
+      beginDate: 1521188897000,
+      endDate: 1521188889111,
+      lowerLimit: 500,
+      fullCut: 50,
+      description: '某节日特价促销'
+    },
+    {
+      key: 3,
+      name: '年中大促',
+      beginDate: 1521188887000,
+      endDate: 1521188887000,
+      lowerLimit: 500,
+      discount: 0.1,
+      fullCut: 50,
+      description: '某节日特价促销'
+    }
+  ],
+  single: {
+    id: 3,
+    name: '年中大促',
+    beginDate: 1521188887000,
+    endDate: 1521188887000,
+    lowerLimit: 500,
+    discount: 0.1,
+    fullCut: 50,
+    description: '某节日特价促销'
+  }
+}
+export const ReportDesignTempData = {
+  single: {
+    id: 1,
+    reportStyle: 1
+  }
+}
+
+// baseData
+export const productCategory = {
+  list: [
+    {
+      key: 1,
+      name: '小鱼',
+      parent: '2'
+    },
+    {
+      key: 2,
+      name: '旺仔饼干',
+      parent: '3'
+    }
+  ],
+  single: {
+    id: 1,
+    name: '熊仔饼',
+    parent: '3'
+  }
+
+}
+export const product = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
       description: '负责采购操作(填写采购申请，采购申报和采购入库)'
     },
     {
       key: 2,
-      name: '采购员2',
-      account: 'purchaser2',
-      roles: '采购管理',
-      post: '采购',
-      cellphone: '1311111112',
-      email: 'a@ac.com',
-      address: 'XX路'
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
     },
     {
       key: 3,
-      name: '采购员3',
-      account: 'purchaser3',
-      roles: '采购管理',
-      post: '采购',
-      cellphone: '1311111113',
-      email: 'a@ad.com',
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
     },
   ],
-  single: {
-    id: 1,
-    name: '采购员1',
-    account: 'purchaser1',
-    roles: [1, 2],
-    rolesName: ['采购管理', '库存处理'],
-    post: 1,
-    postName: '采购',
-    email: 'a@a.com',
-    cellphone: '13111111111',
-    address: 'XX路',
-    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
-  }
-
-}
-export const ReportDesignTempData = {
   single: {
     id: 1,
     name: '采购处理',
     description: '负责采购操作(填写采购申请，采购申报和采购入库)'
   }
+
 }
+export const store = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const supplier = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const client = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+export const employee = {
+  list: [
+    {
+      key: 1,
+      name: '采购处理',
+      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    },
+    {
+      key: 2,
+      name: '采购审核',
+      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
+    },
+    {
+      key: 3,
+      name: '库存处理',
+      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
+    },
+    {
+      key: 4,
+      name: '库存审核',
+      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
+    },
+  ],
+  single: {
+    id: 1,
+    name: '采购处理',
+    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+  }
+
+}
+
 
 

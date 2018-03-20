@@ -35,9 +35,27 @@ const accessControlRoleOptions = (state = {}, action) => {
 }
 
 
+const baseDataProductCategoryParentOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('BASEDATA_PRODUCTCATEGORY_PARENT_OPTIONS') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+const baseDataProductCategoryParentTreeOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+
+
 export default {
   accessControlPostOptions,
   accessControlAuthorityParentOptions,
   accessControlAuthorityParentTreeOptions,
-  accessControlRoleOptions
+  accessControlRoleOptions,
+  baseDataProductCategoryParentOptions,
+  baseDataProductCategoryParentTreeOptions
 }
