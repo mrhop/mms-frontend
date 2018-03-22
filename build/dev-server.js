@@ -72,6 +72,17 @@ app.use(bodyParser.json())
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
+// test file
+app.all('/file/upload.html', function (req, res) {
+  if (req.query && req.query.type === 'productbarcode') {
+    res.send('13332222333x');
+  }
+  else {
+    res.end();
+  }
+});
+
+
 var uri = 'http://localhost:' + port
 
 devMiddleware.waitUntilValid(function () {

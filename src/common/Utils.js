@@ -79,3 +79,7 @@ export const Index = {
   PRODUCT_ANALYSIS: 'PRODUCT_ANALYSIS',
   EMPLOYEE_ANALYSIS: 'EMPLOYEE_ANALYSIS'
 }
+
+export const isCellPhone = ()=>(
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
+)

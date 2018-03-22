@@ -41,8 +41,6 @@ class Update extends Component {
       history.push('/basedata/productcategory')
     } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_SAVE_FAILURE) {
       this.setState({loading: false})
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_OPTIONS_GOT) {
-      this.setState({postOptions: data})
     } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT) {
       this.setState({productCategoryParentOptions: data})
     }

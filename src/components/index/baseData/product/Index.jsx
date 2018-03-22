@@ -1,6 +1,7 @@
 /**
  * Created by Donghui Huo on 2018/1/31.
  */
+// 生成二维码code！！！
 import './Index.scss'
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
@@ -10,6 +11,7 @@ import {Link} from 'react-router-dom'
 
 import {Table, Spin, Divider, Modal, Button, Input, Icon} from 'antd';
 const confirm = Modal.confirm
+const infoalert = Modal.info
 import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 
@@ -48,14 +50,23 @@ class Index extends Component {
   showDeleteConfirm(id) {
     confirm({
       title: '确定删除该记录?',
-      content: '该记录删除不恢复',
+      content: '记录删除不可恢复',
       okType: 'danger',
+      maskClosable: true,
       onOk: (() => {
         this.props.deleteProduct(id)
       }).bind(this),
       onCancel() {
         console.log('Cancel');
       },
+    });
+  }
+
+  showQRcodeModal(id) {
+    infoalert({
+      title: '二维码',
+      content: <img src={'img' + id}/>,
+      maskClosable: true
     });
   }
 
@@ -140,7 +151,7 @@ class Index extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to="#" onClick={this.showDeleteConfirm.bind(this,record.key)}>生成二维码</Link>
+            <Link to="#" onClick={this.showQRcodeModal.bind(this,record.key)}>生成二维码</Link>
             <Divider type="vertical"/>
             <Link to={{
               pathname: '/basedata/product/updateproduct',
