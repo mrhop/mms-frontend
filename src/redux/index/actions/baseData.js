@@ -207,6 +207,61 @@ export const deleteStore = (data) => (dispatch, getState) => {
     type: actionTypes.BASEDATA_STORE_DELETE_BEGIN,
   })
 }
+// STORE POSITION
+export const getStorePositionList = (data) => (dispatch, getState) => {
+  if (data && data.storeId) {
+    setTimeout(function () {
+      console.log('getStoreList success')
+      // 此处返回data
+      return dispatch({
+        type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT
+      })
+    }, 300)
+    return dispatch({
+      type: actionTypes.BASEDATA_STORE_POSITION_LIST_QUERY
+    })
+  }
+  return dispatch({
+    type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT
+  })
+}
+
+export const getStorePositionSingle = (data) => (dispatch, getState) => {
+  // to server
+  if (data && data.id) {
+    const {baseDataStorePositionList} = getState()
+    if (baseDataStorePositionList.data) {
+      let filteSingle = baseDataStorePositionList.data.filter(function (val) {
+        return val.id === data.id
+      })
+      if (filteSingle != null && filteSingle[0]) {
+        return dispatch(Object.assign(data, {
+          type: actionTypes.BASEDATA_STORE_POSITION_SINGLE_GOT,
+          data: filteSingle[0]
+        }))
+      }
+    }
+  }
+  return dispatch({
+    type: actionTypes.BASEDATA_STORE_POSITION_SINGLE_INIT,
+  })
+}
+
+export const saveStorePosition = (data) => (dispatch, getState) => {
+  console.log('saveStore success')
+  // 此处返回快捷方式的data
+  return dispatch({
+    data,
+    type: actionTypes.BASEDATA_STORE_POSITION_SAVE_SUCCESS,
+  })
+}
+
+export const deleteStorePosition = (data) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.BASEDATA_STORE_POSITION_DELETE_SUCCESS,
+    data
+  })
+}
 // supplier
 export const getSupplierList = (data) => (dispatch, getState) => {
   // to server

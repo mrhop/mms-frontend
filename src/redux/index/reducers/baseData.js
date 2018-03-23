@@ -47,6 +47,39 @@ const baseDataStoreSingle = (state = {}, action) => {
     return {}
   }
 }
+const baseDataStorePositionList = (state = {}, action) => {
+  if (action.type === actionTypes.BASEDATA_STORE_POSITION_DELETE_SUCCESS) {
+    let filters = state.data.filter(function (val) {
+      return val.id !== action.data.id
+    })
+    return {data: filters, type: action.type}
+  } else if (action.type === actionTypes.BASEDATA_STORE_POSITION_SAVE_SUCCESS) {
+    if (action.data && action.data.id) {
+      for (let key in baseDataStorePositionList) {
+        if(state.data[key].key === action.data.id){
+          state.data[key] = action.data
+          state.data[key].key = action.data.id
+        }
+      }
+    }else{
+      action.data.key = action.data.id
+      state.data.push(action.data)
+    }
+    return {data: state.data, type: action.type}
+  } else if (action && action.type && (action.type.indexOf('BASEDATA_STORE_POSITION_LIST') > -1 ||
+      action.type.indexOf('BASEDATA_STORE_POSITION_DELETE') > -1 || action.type.indexOf('BASEDATA_STORE_POSITION_SAVE')>-1)) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+const baseDataStorePositionSingle = (state = {}, action) => {
+  if (action && action.type && (action.type.indexOf('BASEDATA_STORE_POSITION_SINGLE') > -1)) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
 const baseDataSupplierList = (state = {}, action) => {
   if (action && action.type && (action.type.indexOf('BASEDATA_SUPPLIER_LIST') > -1 || action.type.indexOf('BASEDATA_SUPPLIER_DELETE') > -1)) {
     return Object.assign(state, action)
@@ -97,6 +130,8 @@ export default {
   baseDataProductSingle,
   baseDataStoreList,
   baseDataStoreSingle,
+  baseDataStorePositionList,
+  baseDataStorePositionSingle,
   baseDataSupplierList,
   baseDataSupplierSingle,
   baseDataClientList,
