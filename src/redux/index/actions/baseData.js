@@ -114,7 +114,7 @@ export const saveProduct = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('saveProduct success')
+    console.log('saveProduct success', data)
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.BASEDATA_PRODUCT_SAVE_SUCCESS,
@@ -148,7 +148,7 @@ export const getStoreList = (data) => (dispatch, getState) => {
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.BASEDATA_STORE_LIST_GOT,
-      data: TempData.supplier.list
+      data: TempData.store.list
     })
   }, 300)
   return dispatch({
@@ -165,7 +165,7 @@ export const getStoreSingle = (data) => (dispatch, getState) => {
       // 此处返回快捷方式的data
       return dispatch(Object.assign(data, {
         type: actionTypes.BASEDATA_STORE_SINGLE_GOT,
-        data: TempData.supplier.single
+        data: TempData.store.single
       }))
     }, 300)
     return dispatch({

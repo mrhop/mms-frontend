@@ -5,20 +5,41 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {Form, Icon, Input, Button, TreeSelect, Col, Alert, message, InputNumber, Spin, Upload} from 'antd';
+import {
+  Form,
+  Icon,
+  Select,
+  Input,
+  Button,
+  TreeSelect,
+  Col,
+  Alert,
+  message,
+  InputNumber,
+  Spin,
+  Upload,
+  Radio,
+  Modal
+} from 'antd';
 
+const FormItem = Form.Item
+const RadioGroup = Radio.Group
+const Option = Select.Option
 import {history} from '../../../../redux/index/store'
 import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
 import {positiveNumberValidate} from '../../../../common/FormValidate';
-import {isCellPhone} from '../../../../common/Utils';
 
+// 继续实现该页面
 class Add extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      previewVisible: false,
+      previewImage: '',
+      pictureList: []
     }
     this.props.getProductSingle()
     this.props.getProductCategoryParentTreeOptions()
@@ -27,7 +48,7 @@ class Add extends Component {
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
     if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_SUCCESS) {
-      history.push('/basedata/productcategory')
+      history.push('/basedata/product')
     } else if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
       this.setState({loading: false})
     } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT) {
@@ -61,8 +82,42 @@ class Add extends Component {
     innerFun.bind(this)()
   }
 
+  handleCancel = () => this.setState({previewVisible: false})
+
+  handlePreview = (file) => {
+    console.log('picture', file)
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
+  handleChange = ({fileList}) => {
+    this.setState({pictureList: fileList})
+    let pictures = fileList.map(function (val) {
+      return val && val.response && val.status === 'done' && val.response && val.response.url
+    })
+    this.props.form.setFieldsValue({pictures})
+  }
+
+  handleRemove = (file) => {
+    const pictures = this.props.form.getFieldValue('pictures')
+    let url = null
+    if (file && file.url) {
+      url = file.url
+    } else {
+      url = file && file.response && file.response.url
+    }
+    if (url) {
+      let newPictures = pictures.filter((value) => {
+        value !== url
+      })
+      this.props.form.setFieldsValue({pictures: newPictures})
+    }
+  }
+
+
   render() {
-    const {loading, productCategoryParentOptions} = this.state
+    const {loading, productCategoryParentOptions, pictureList, previewVisible, previewImage} = this.state
 
     const barCodeProps = {
       name: 'file',
@@ -71,8 +126,24 @@ class Add extends Component {
       showUploadList: false,
       onChange: this.barCodeUpload,
     };
+    const pictureProps = {
+      accept: 'image/*',
+      action: '//localhost:8080/file/upload.html?type=productpicture',
+      listType: "picture-card",
+      onPreview: this.handlePreview,
+      onChange: this.handleChange,
+      onRemove: this.handleRemove,
+      fileList: pictureList
+    };
+
+    const uploadButton = (
+      <div>
+        <Icon type="plus"/>
+        <div className="ant-upload-text">上传</div>
+      </div>
+    );
+
     const {type} = this.props
-    const FormItem = Form.Item
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
     if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
@@ -83,6 +154,25 @@ class Add extends Component {
         showIcon
       />
     }
+    const weightPrefixSelector = getFieldDecorator('weightPrefix', {
+      initialValue: 'kg',
+    })(
+      <Select style={{width: 70}}>
+        <Option value="g">克</Option>
+        <Option value="cng">两</Option>
+        <Option value="kg">公斤</Option>
+        <Option value="cnkg">斤</Option>
+        <Option value="t">吨</Option>
+      </Select>
+    );
+    const volumePrefixSelector = getFieldDecorator('volumePrefix', {
+      initialValue: 'ml',
+    })(
+      <Select style={{width: 70}}>
+        <Option value="ml">毫升</Option>
+        <Option value="l">升</Option>
+      </Select>
+    );
     return <Spin style={{width: '100%'}} tip="处理中"
                  spinning={loading}>
       {alertMsg}
@@ -164,6 +254,85 @@ class Add extends Component {
                      </a>
                    </Upload>}
             />
+          )}
+        </FormItem>
+
+        <FormItem
+          {...formItemLayout}
+          label="产品图片"
+        >
+          {getFieldDecorator('pictures',
+            {
+              initialValue: pictureList
+            })(
+            <Input type="hidden"/>
+          )}
+          <Upload {...pictureProps}>
+            {pictureList.length >= 5 ? null : uploadButton}
+          </Upload>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{width: '100%'}} src={previewImage}/>
+          </Modal>
+        </FormItem>
+        <FormItem label="组合产品" {...formItemLayout}>
+          {getFieldDecorator('isCombination', {
+            rules: [{
+              required: true, message: '必选字段!'
+            }],
+            initialValue: false,
+          })(
+            <RadioGroup>
+              <Radio value={true}>是</Radio>
+              <Radio value={false}>否</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+        <FormItem label="原材料" {...formItemLayout}>
+          {getFieldDecorator('isMaterial', {
+            rules: [{
+              required: true, message: '必选字段!'
+            }],
+            initialValue: false,
+          })(
+            <RadioGroup>
+              <Radio value={true}>是</Radio>
+              <Radio value={false}>否</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+        <FormItem label="单位" {...formItemLayout}>
+          {getFieldDecorator('unit',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+              initialValue: '个'
+            })(
+            <Input placeholder="单位"/>
+          )}
+        </FormItem>
+        <FormItem label="重量" {...formItemLayout}>
+          {getFieldDecorator('weight',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }, {
+                validator: positiveNumberValidate
+              }]
+            })(
+            <Input placeholder="重量" addonAfter={weightPrefixSelector}/>
+          )}
+        </FormItem>
+        <FormItem label="容积" {...formItemLayout}>
+          {getFieldDecorator('volume',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }, {
+                validator: positiveNumberValidate
+              }]
+            })(
+            <Input placeholder="容积" addonAfter={volumePrefixSelector}/>
           )}
         </FormItem>
         <FormItem {...formItemTailLayout}>

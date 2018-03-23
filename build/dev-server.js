@@ -74,10 +74,14 @@ app.use(staticPath, express.static('./static'))
 
 // test file
 app.all('/file/upload.html', function (req, res) {
-  if (req.query && req.query.type === 'productbarcode') {
-    res.send('13332222333x');
-  }
-  else {
+  if (req.query && req.query.type) {
+    if (req.query.type === 'productbarcode') {
+      res.send('13332222333x');
+
+    } else if (req.query.type === 'productpicture') {
+      res.send({'url':'//localhost:8080/static/images/testpic.jpg'});
+    }
+  } else {
     res.end();
   }
 });
