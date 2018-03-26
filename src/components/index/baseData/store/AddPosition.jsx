@@ -39,21 +39,21 @@ class Add extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      listData: [],
-      data: {},
-      formVisible: 'none'
+      data: undefined,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const {type, data} = nextProps
-    if (type === ActionTypes.BASEDATA_STORE_POSITION_SINGLE_QUERY) {
-      this.setState({data, loading: true})
-    } else {
-      this.setState({loading: false})
+    const {type, data, positionId} = nextProps
+
+    if (positionId !== this.props.positionId) {
+      this.props.getStorePositionSingle({id: positionId})
+    }
+    if (type === ActionTypes.BASEDATA_STORE_POSITION_SINGLE_GOT) {
+      this.setState({data})
     }
   }
+
 
   handleReset = () => {
     this.props.form.resetFields();
@@ -63,7 +63,6 @@ class Add extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({loading: true})
         this.props.saveStorePosition(values)
       }
     });
@@ -75,36 +74,34 @@ class Add extends Component {
     const {getFieldDecorator} = this.props.form
     return (
       <Form onSubmit={this.submitFun}>
-        {data && data.id && <FormItem{...formItemLayout}>
-
+        <FormItem{...formItemLayout}>
           {getFieldDecorator('id',
             {
               initialValue: data && data.id
             })(
-            <Input placeholder="名称"/>
+            <Input type="hidden" name='id'/>
           )}
-        </FormItem>}
+        </FormItem>
         <FormItem label="名称" {...formItemLayout}>
           {getFieldDecorator('name',
             {
               rules: [{
                 required: true, message: '必选字段!'
-              }],
-              initialValue: data && data.name
+              }]
             })(
             <Input placeholder="名称"/>
           )}
         </FormItem>
         <FormItem label="容积" {...formItemLayout}>
-          {getFieldDecorator('costPrice',
+          {getFieldDecorator('volume',
             {
               rules: [{
                 required: true, message: '必选字段!'
               }],
             })(
             <InputNumber style={{width: '100%'}}
-                         formatter={value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))立方米/g, ',')}
-                         parser={value => value.replace(/￥\s?|(,*)/g, '')}
+                         formatter={value => `${value} 立方米`.replace(/(?=(\d{3})+(?!\d))\B/g, ',')}
+                         parser={value => value.replace(/\s?立方米|(,*)/g, '')}
                          placeholder="容积"/>
           )}
         </FormItem>
@@ -118,10 +115,10 @@ class Add extends Component {
 
 
 Add.propTypes = {
-  storeId: PropTypes.number,
+  positionId: PropTypes.any,
   form: PropTypes.object.isRequired,
   type: PropTypes.string,
-  data: PropTypes.array,
+  data: PropTypes.object,
   getStorePositionSingle: PropTypes.func,
   saveStorePosition: PropTypes.func
 }
@@ -139,5 +136,35 @@ const mapDispatchToProps = {
 const AddProxy = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Form.create()(Add))
+)(Form.create({
+  mapPropsToFields(props) {
+    const {positionId, data, type} = props
+    if (positionId && type && type === ActionTypes.BASEDATA_STORE_POSITION_SINGLE_GOT) {
+      return {
+        id: Form.createFormField({
+          value: data.id,
+        }),
+        name: Form.createFormField({
+          value: data.name,
+        }),
+        volume: Form.createFormField({
+          value: data.volume,
+        }),
+      };
+    } else {
+      return {
+        id: Form.createFormField({
+          value: undefined,
+        }),
+        name: Form.createFormField({
+          value: undefined,
+        }),
+        volume: Form.createFormField({
+          value: undefined,
+        }),
+      };
+    }
+
+  }
+})(Add))
 export default AddProxy;

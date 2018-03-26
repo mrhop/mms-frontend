@@ -1,7 +1,9 @@
 /**
  * Created by Donghui Huo on 2018/1/31.
  */
-// 接着处理，注意store position form 放在modal里面
+// 接着处理，保存的时候，库位的保存注意
+import './Add.scss'
+
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
@@ -29,6 +31,7 @@ const FormItem = Form.Item
 const TextArea = Input.TextArea
 const RadioGroup = Radio.Group
 const Option = Select.Option
+const confirm = Modal.confirm
 import {history} from '../../../../redux/index/store'
 import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
@@ -42,19 +45,24 @@ class Add extends Component {
     super(props);
     this.state = {
       loading: false,
-      listData: [],
+      positionListData: [],
+      positionAddvisible: false,
+      positionId: undefined,
     }
     this.props.getStorePositionList()
   }
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.BASEDATA_STORE_POSITION_LIST_GOT) {
-      this.setState({listData: data})
+    if (type === ActionTypes.BASEDATA_STORE_POSITION_LIST_GOT || type === ActionTypes.BASEDATA_STORE_POSITION_DELETE_SUCCESS) {
+      this.setState({positionListData: data})
     } else if (type === ActionTypes.BASEDATA_STORE_SAVE_SUCCESS) {
       history.push('/basedata/store')
     } else if (type === ActionTypes.BASEDATA_STORE_SAVE_FAILURE) {
       this.setState({loading: false})
+    } else if (type === ActionTypes.BASEDATA_STORE_POSITION_SAVE_SUCCESS) {
+      this.setState({positionAddvisible: false})
+      this.props.getStorePositionList()
     }
   }
 
@@ -64,6 +72,7 @@ class Add extends Component {
 
   submitFun = (e) => {
     e.preventDefault()
+    this.props.form.setFieldsValue({positions: this.state.positionListData})
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
@@ -87,8 +96,15 @@ class Add extends Component {
     });
   }
 
+  onOpenPositionModal = () => {
+    this.setState({positionAddvisible: true, positionId: null})
+  }
+  onCancelPostionModal = () => {
+    this.setState({positionAddvisible: false})
+  }
+
   render() {
-    const {loading, positionListData} = this.state
+    const {loading, positionListData, positionId} = this.state
     const {type} = this.props
     const {getFieldDecorator} = this.props.form
     const columns = [
@@ -99,11 +115,11 @@ class Add extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link onClick={() => {
-              this.props.getStorePositionSingle({id: record.key})
+            <Link to="#" onClick={() => {
+              this.setState({positionId: record.key, positionAddvisible: true})
             }}>修改</Link>
               <Divider type="vertical"/>
-              <Link onClick={this.showDeleteConfirm.bind(this, record.key)}>删除</Link>
+              <Link to="#" onClick={this.showDeleteConfirm.bind(this, record.key)}>删除</Link>
               </span>
         )
       }
@@ -117,6 +133,7 @@ class Add extends Component {
         showIcon
       />
     }
+    const addPositionModal = <Modal/>
     return <Spin style={{width: '100%'}} tip="处理中"
                  spinning={loading}>
       {alertMsg}
@@ -143,15 +160,15 @@ class Add extends Component {
         </FormItem>
 
         <FormItem label="容积" {...formItemLayout}>
-          {getFieldDecorator('costPrice',
+          {getFieldDecorator('volume',
             {
               rules: [{
                 required: true, message: '必选字段!'
               }],
             })(
             <InputNumber style={{width: '100%'}}
-                         formatter={value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))立方米/g, ',')}
-                         parser={value => value.replace(/￥\s?|(,*)/g, '')}
+                         formatter={value => `${value} 立方米`.replace(/(?=(\d{3})+(?!\d))\B/g, ',')}
+                         parser={value => value.replace(/\s?立方米|(,*)/g, '')}
                          placeholder="容积"/>
           )}
         </FormItem>
@@ -173,7 +190,7 @@ class Add extends Component {
           {getFieldDecorator('positions')(
             <Input type="hidden"/>
           )}
-          <Button>添加库位</Button>
+          <Button onClick={this.onOpenPositionModal}>添加库位</Button>
           <Table
             columns={columns}
             dataSource={positionListData}
@@ -190,7 +207,14 @@ class Add extends Component {
           <Col span={12}><Button type="primary" htmlType="submit">保存</Button></Col>
         </FormItem>
       </Form>
-      <AddPosition/>
+      <Modal
+        title="新增或修改库位"
+        visible={this.state.positionAddvisible}
+        onCancel={this.onCancelPostionModal}
+        footer={null}
+      >
+        <AddPosition positionId={positionId}/>
+      </Modal>
     </Spin>
   }
 }
@@ -203,7 +227,6 @@ Add.propTypes = {
   saveStore: PropTypes.func,
   getStoreSingle: PropTypes.func,
   getStorePositionList: PropTypes.func,
-  getStorePositionSingle: PropTypes.func,
   deleteStorePosition: PropTypes.func,
   form: PropTypes.object.isRequired
 }
@@ -211,6 +234,7 @@ Add.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    ...state.baseDataStorePositionList,
     ...state.baseDataStoreSingle,
   }
 }

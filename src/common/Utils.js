@@ -83,3 +83,7 @@ export const Index = {
 export const isCellPhone = ()=>(
   /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
 )
+
+export const ramdonSn = ()=>(
+  new Date().getTime()+''+Math.round(Math.random()*1000)
+)

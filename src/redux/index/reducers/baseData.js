@@ -2,6 +2,7 @@
  * Created by Donghui Huo on 2018/1/31.
  */
 import * as actionTypes from '../actions/ActionTypes'
+import {ramdonSn} from '../../../common/Utils'
 
 const baseDataProductCategoryList = (state = {}, action) => {
   if (action && action.type && (action.type.indexOf('BASEDATA_PRODUCTCATEGORY_LIST') > -1 || action.type.indexOf('BASEDATA_PRODUCTCATEGORY_DELETE') > -1)) {
@@ -47,7 +48,7 @@ const baseDataStoreSingle = (state = {}, action) => {
     return {}
   }
 }
-const baseDataStorePositionList = (state = {}, action) => {
+const baseDataStorePositionList = (state = {data: []}, action) => {
   if (action.type === actionTypes.BASEDATA_STORE_POSITION_DELETE_SUCCESS) {
     let filters = state.data.filter(function (val) {
       return val.id !== action.data.id
@@ -56,21 +57,22 @@ const baseDataStorePositionList = (state = {}, action) => {
   } else if (action.type === actionTypes.BASEDATA_STORE_POSITION_SAVE_SUCCESS) {
     if (action.data && action.data.id) {
       for (let key in baseDataStorePositionList) {
-        if(state.data[key].key === action.data.id){
+        if (state.data[key].key === action.data.id) {
           state.data[key] = action.data
           state.data[key].key = action.data.id
         }
       }
-    }else{
-      action.data.key = action.data.id
+    } else {
+      const key = 'tepm' + ramdonSn()
+      action.data.key = action.data.id = key
       state.data.push(action.data)
     }
     return {data: state.data, type: action.type}
   } else if (action && action.type && (action.type.indexOf('BASEDATA_STORE_POSITION_LIST') > -1 ||
-      action.type.indexOf('BASEDATA_STORE_POSITION_DELETE') > -1 || action.type.indexOf('BASEDATA_STORE_POSITION_SAVE')>-1)) {
+      action.type.indexOf('BASEDATA_STORE_POSITION_DELETE') > -1 || action.type.indexOf('BASEDATA_STORE_POSITION_SAVE') > -1)) {
     return Object.assign(state, action)
   } else {
-    return {}
+    return state
   }
 }
 const baseDataStorePositionSingle = (state = {}, action) => {

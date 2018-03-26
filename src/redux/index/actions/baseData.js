@@ -182,8 +182,9 @@ export const saveStore = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('saveStore success')
+    console.log('saveStore success', data)
     // 此处返回快捷方式的data
+    getState().baseDataStorePositionList = {data: []}
     return dispatch({
       type: actionTypes.BASEDATA_STORE_SAVE_SUCCESS,
     })
@@ -214,7 +215,7 @@ export const getStorePositionList = (data) => (dispatch, getState) => {
       console.log('getStoreList success')
       // 此处返回data
       return dispatch({
-        type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT
+        type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT,
       })
     }, 300)
     return dispatch({
