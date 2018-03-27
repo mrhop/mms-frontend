@@ -3,6 +3,7 @@
  */
 import * as actionTypes from './ActionTypes'
 import * as TempData from '../../../common/TempData'
+
 export const getPostOptions = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
@@ -78,6 +79,19 @@ export const getProductCategoryParentTreeOptions = (data) => (dispatch, getState
     return dispatch({
       type: actionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT,
       data: TempData.optionsTempData.productCategoryParentTree
+    })
+  }, 300)
+}
+
+export const getStoreOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getStoreOptions option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.BASEDATA_STORE_OPTIONS_GOT,
+      data: TempData.optionsTempData.store
     })
   }, 300)
 }

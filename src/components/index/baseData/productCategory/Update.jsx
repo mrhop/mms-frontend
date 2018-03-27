@@ -16,7 +16,7 @@ class Update extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: true,
       data: undefined,
       id: undefined
     }

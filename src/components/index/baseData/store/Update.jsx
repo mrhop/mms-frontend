@@ -1,10 +1,14 @@
 /**
  * Created by Donghui Huo on 2018/1/31.
  */
-// 考虑一下删除的情况
+// 接着处理，保存的时候，库位的保存注意
+import './Add.scss'
+
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
+
 
 import {
   Form,
@@ -15,24 +19,27 @@ import {
   TreeSelect,
   Col,
   Alert,
-  message,
+  Divider,
   InputNumber,
   Spin,
-  Upload,
+  Table,
   Radio,
   Modal
 } from 'antd';
 
 const FormItem = Form.Item
+const TextArea = Input.TextArea
 const RadioGroup = Radio.Group
 const Option = Select.Option
+const confirm = Modal.confirm
 import {history} from '../../../../redux/index/store'
 import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
 import {positiveNumberValidate} from '../../../../common/FormValidate';
+import UpdatePosition from './AddPosition'
 
-// 继续实现该页面
+// 继续实现该页面,到达库位的初始化部分
 class Update extends Component {
   constructor(props) {
     super(props);
@@ -40,18 +47,17 @@ class Update extends Component {
       loading: true,
       data: undefined,
       id: undefined,
-      previewVisible: false,
-      previewImage: '',
-      pictureList: []
+      positionListData: [],
+      positionUpdatevisible: false,
+      positionId: undefined,
     }
-    this.props.getProductCategoryParentTreeOptions()
   }
 
   componentWillMount() {
     const {location} = this.props
     if (location.state && location.state.id) {
       this.setState({id: location.state.id})
-      this.props.getProductSingle({id: location.state.id})
+      this.props.getStoreSingle({id: location.state.id})
     } else {
       window.location.href = '/'
     }
@@ -59,25 +65,18 @@ class Update extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.BASEDATA_PRODUCT_SINGLE_GOT) {
+    if (type === ActionTypes.BASEDATA_STORE_SINGLE_GOT) {
       this.setState({loading: false, data})
-      if (data && data.pictures && this.state.pictureList.length <= 0) {
-        let pictureList = data.pictures.map(function (val, index) {
-          return {
-            status: 'done',
-            url: val,
-            uid: index,
-            name: val
-          }
-        })
-        this.setState({pictureList})
-      }
-    } else if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_SUCCESS) {
-      history.push('/basedata/product')
-    } else if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
+      this.props.getStorePositionList()
+    } else if (type === ActionTypes.BASEDATA_STORE_POSITION_LIST_GOT || type === ActionTypes.BASEDATA_STORE_POSITION_DELETE_SUCCESS) {
+      this.setState({positionListData: data})
+    } else if (type === ActionTypes.BASEDATA_STORE_SAVE_SUCCESS) {
+      history.push('/basedata/store')
+    } else if (type === ActionTypes.BASEDATA_STORE_SAVE_FAILURE) {
       this.setState({loading: false})
-    } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_PARENT_TREE_OPTIONS_GOT) {
-      this.setState({productCategoryParentOptions: data})
+    } else if (type === ActionTypes.BASEDATA_STORE_POSITION_SAVE_SUCCESS) {
+      this.setState({positionUpdatevisible: false})
+      this.props.getStorePositionList()
     }
   }
 
@@ -87,95 +86,67 @@ class Update extends Component {
 
   submitFun = (e) => {
     e.preventDefault()
+    this.props.form.setFieldsValue({positions: this.state.positionListData})
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
-        this.props.saveProduct(values)
+        this.props.saveStore(values)
       }
     });
   }
 
-  barCodeUpload = (info) => {
-    const innerFun = () => {
-      if (info.file.status === 'done') {
-        this.props.form.setFieldsValue({barCode: info.file.response})
-        info.fileList.splice(0)
-      } else if (info.file.status === 'error') {
-        message.error('后台无法识别条码图片，请另行上传或手动添加');
-      }
-    }
-    innerFun.bind(this)()
-  }
-
-  handleCancel = () => this.setState({previewVisible: false})
-
-  handlePreview = (file) => {
-    console.log('picture', file)
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
+  showDeleteConfirm(id) {
+    confirm({
+      title: '确定删除该记录?',
+      content: '记录删除不可恢复',
+      okType: 'danger',
+      maskClosable: true,
+      onOk: (() => {
+        this.props.deleteStorePosition({id})
+      }).bind(this),
+      onCancel() {
+        console.log('Cancel');
+      },
     });
   }
-  handleChange = ({fileList, file}) => {
-    this.setState({pictureList: fileList})
-    if (file.status === 'done') {
-      let pictures = fileList.map(function (val) {
-        if (val && val.url) {
-          return val.url
-        } else {
-          return val && val.status === 'done' && val.response && val.response.url
-        }
-      })
-      this.props.form.setFieldsValue({pictures})
-    }
-  }
 
-  handleRemove = (file) => {
-    const pictures = this.props.form.getFieldValue('pictures')
-    let url = null
-    if (file && file.url) {
-      url = file.url
-    } else {
-      url = file && file.response && file.response.url
-    }
-    if (url) {
-      let newPictures = pictures.filter((value) => {
-        value !== url
-      })
-      this.props.form.setFieldsValue({pictures: newPictures})
-    }
+  onOpenPositionModal = () => {
+    this.setState({positionUpdatevisible: true, positionId: null})
+  }
+  onCancelPostionModal = () => {
+    this.setState({positionUpdatevisible: false})
   }
 
   render() {
-    const {loading, productCategoryParentOptions, pictureList, previewVisible, previewImage, data} = this.state
-    const barCodeProps = {
-      name: 'file',
-      accept: 'image/*',
-      action: '//localhost:8080/file/upload.html?type=productbarcode',
-      showUploadList: false,
-      onChange: this.barCodeUpload,
-    };
-    const pictureProps = {
-      accept: 'image/*',
-      action: '//localhost:8080/file/upload.html?type=productpicture',
-      listType: "picture-card",
-      onPreview: this.handlePreview,
-      onChange: this.handleChange,
-      fileList: pictureList,
-      onRemove: this.handleRemove
-    };
-
-    const uploadButton = (
-      <div>
-        <Icon type="plus"/>
-        <div className="ant-upload-text">上传</div>
-      </div>
-    );
-
+    const {loading, positionListData, positionId, data} = this.state
     const {type} = this.props
     const {getFieldDecorator} = this.props.form
+    const columns = [
+      {title: '名称', dataIndex: 'name', key: 'name'},
+      {title: '容积（立方米）', dataIndex: 'volume', key: 'volume'},
+      {
+        title: '操作',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            <Link to="#" onClick={() => {
+              this.setState({positionId: record.key, positionUpdatevisible: true})
+            }}>修改</Link>
+              <Divider type="vertical"/>
+              <Link to="#" onClick={this.showDeleteConfirm.bind(this, record.key)}>删除</Link>
+              </span>
+        )
+      }
+    ];
     let alertMsg = null
-    if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_STORE_SINGLE_FAILURE) {
+      alertMsg = <Alert
+        message="获取失败"
+        description="失败原因，后台传回"
+        type="error"
+        showIcon
+      />
+    } else if (type === ActionTypes.BASEDATA_STORE_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"
@@ -183,25 +154,7 @@ class Update extends Component {
         showIcon
       />
     }
-    const weightPrefixSelector = getFieldDecorator('weightPrefix', {
-      initialValue: data && data.weightUnit,
-    })(
-      <Select style={{width: 70}}>
-        <Option value="g">克</Option>
-        <Option value="cng">两</Option>
-        <Option value="kg">公斤</Option>
-        <Option value="cnkg">斤</Option>
-        <Option value="t">吨</Option>
-      </Select>
-    );
-    const volumePrefixSelector = getFieldDecorator('volumePrefix', {
-      initialValue: data && data.volumeUnit,
-    })(
-      <Select style={{width: 70}}>
-        <Option value="ml">毫升</Option>
-        <Option value="l">升</Option>
-      </Select>
-    );
+    const addPositionModal = <Modal/>
     return <Spin style={{width: '100%'}} tip="处理中"
                  spinning={loading}>
       {alertMsg}
@@ -235,151 +188,51 @@ class Update extends Component {
             <Input placeholder="编码"/>
           )}
         </FormItem>
-        <FormItem label="分类" {...formItemLayout}>
-          {getFieldDecorator('productCategory',
-            {
-              rules: [{
-                required: true, message: '必选字段!'
-              }],
-              initialValue: data && data.productCategory,
-            })(
-            <TreeSelect
-              dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-              treeData={productCategoryParentOptions}
-              placeholder="分类"
-              allowClear
-            />
-          )}
-        </FormItem>
-        <FormItem label="成本价" {...formItemLayout}>
-          {getFieldDecorator('costPrice',
-            {
-              rules: [{
-                required: true, message: '必选字段!'
-              }],
-              initialValue: data && data.costPrice,
-            })(
-            <InputNumber style={{width: '100%'}}
-                         formatter={value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                         parser={value => value.replace(/￥\s?|(,*)/g, '')}
-                         placeholder="成本价"/>
-          )}
-        </FormItem>
-        <FormItem label="销售价" {...formItemLayout}>
-          {getFieldDecorator('salePrice',
-            {
-              rules: [{
-                required: true, message: '必选字段!'
-              }],
-              initialValue: data && data.salePrice,
-            })(
-            <InputNumber style={{width: '100%'}}
-                         formatter={value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                         parser={value => value.replace(/￥\s?|(,*)/g, '')}
-                         placeholder="销售价"/>
-          )}
-        </FormItem>
-        <FormItem label="库存下限" {...formItemLayout}>
-          {getFieldDecorator('lowerLimit',
-            {
-              initialValue: data && data.lowerLimit,
-            })(
-            <InputNumber style={{width: '100%'}}
-                         placeholder="库存下限"/>
-          )}
-        </FormItem>
-        <FormItem label="产品条形码" {...formItemLayout}>
-          {getFieldDecorator('barCode', {
-            initialValue: data && data.barCode,
-          })(
-            <Input placeholder="产品条形码"
-                   addonAfter={<Upload {...barCodeProps}>
-                     <a>
-                       <Icon type="picture"/> 选择图片
-                     </a>
-                   </Upload>}
-            />
-          )}
-        </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="产品图片"
-        >
-          {getFieldDecorator('pictures',
-            {
-              initialValue: data && data.pictures,
-            })(
-            <Input type="hidden"/>
-          )}
-          <Upload {...pictureProps}>
-            {pictureList.length >= 5 ? null : uploadButton}
-          </Upload>
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{width: '100%'}} src={previewImage}/>
-          </Modal>
-        </FormItem>
-        <FormItem label="组合产品" {...formItemLayout}>
-          {getFieldDecorator('isCombination', {
-            rules: [{
-              required: true, message: '必选字段!'
-            }],
-            initialValue: data && data.isCombination,
-          })(
-            <RadioGroup>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
-        <FormItem label="原材料" {...formItemLayout}>
-          {getFieldDecorator('isMaterial', {
-            rules: [{
-              required: true, message: '必选字段!'
-            }],
-            initialValue: data && data.isMaterial,
-          })(
-            <RadioGroup>
-              <Radio value={true}>是</Radio>
-              <Radio value={false}>否</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
-        <FormItem label="单位" {...formItemLayout}>
-          {getFieldDecorator('unit',
-            {
-              rules: [{
-                required: true, message: '必选字段!'
-              }],
-              initialValue: data && data.unit,
-            })(
-            <Input placeholder="单位"/>
-          )}
-        </FormItem>
-        <FormItem label="重量" {...formItemLayout}>
-          {getFieldDecorator('weight',
-            {
-              rules: [{
-                required: true, message: '必选字段!'
-              }, {
-                validator: positiveNumberValidate
-              }],
-              initialValue: data && data.weight,
-            })(
-            <Input placeholder="重量" addonAfter={weightPrefixSelector}/>
-          )}
-        </FormItem>
         <FormItem label="容积" {...formItemLayout}>
           {getFieldDecorator('volume',
             {
               rules: [{
                 required: true, message: '必选字段!'
-              }, {
-                validator: positiveNumberValidate
               }],
               initialValue: data && data.volume,
             })(
-            <Input placeholder="容积" addonAfter={volumePrefixSelector}/>
+            <InputNumber style={{width: '100%'}}
+                         formatter={value => `${value} 立方米`.replace(/(?=(\d{3})+(?!\d))\B/g, ',')}
+                         parser={value => value.replace(/\s?立方米|(,*)/g, '')}
+                         placeholder="容积"/>
+          )}
+        </FormItem>
+        <FormItem label="主库" {...formItemLayout}>
+          {getFieldDecorator('isPrimary', {
+            rules: [{
+              required: true, message: '必选字段!'
+            }],
+            initialValue: data && data.isPrimary,
+          })(
+            <RadioGroup>
+              <Radio value={true}>是</Radio>
+              <Radio value={false}>否</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+
+        <FormItem className='positions' label="库位信息" {...formItemLayout}>
+          {getFieldDecorator('positions', {
+            initialValue: data && data.positions,
+          })(
+            <Input type="hidden"/>
+          )}
+          <Button onClick={this.onOpenPositionModal}>添加库位</Button>
+          <Table
+            columns={columns}
+            dataSource={positionListData}
+            pagination={false}
+          />
+        </FormItem>
+        <FormItem label="详细说明" {...formItemLayout}>
+          {getFieldDecorator('description', {})(
+            <TextArea placeholder="详细说明"/>
           )}
         </FormItem>
         <FormItem {...formItemTailLayout}>
@@ -387,6 +240,14 @@ class Update extends Component {
           <Col span={12}><Button type="primary" htmlType="submit">保存</Button></Col>
         </FormItem>
       </Form>
+      <Modal
+        title="新增或修改库位"
+        visible={this.state.positionUpdatevisible}
+        onCancel={this.onCancelPostionModal}
+        footer={null}
+      >
+        <UpdatePosition positionId={positionId}/>
+      </Modal>
     </Spin>
   }
 }
@@ -396,17 +257,18 @@ Update.propTypes = {
   location: PropTypes.object,
   type: PropTypes.string,
   data: PropTypes.any,
-  saveProduct: PropTypes.func,
-  getProductSingle: PropTypes.func,
-  getProductCategoryParentTreeOptions: PropTypes.func,
+  saveStore: PropTypes.func,
+  getStoreSingle: PropTypes.func,
+  getStorePositionList: PropTypes.func,
+  deleteStorePosition: PropTypes.func,
   form: PropTypes.object.isRequired
 }
 
 
 const mapStateToProps = (state) => {
   return {
-    ...state.baseDataProductSingle,
-    ...state.baseDataProductCategoryParentTreeOptions
+    ...state.baseDataStorePositionList,
+    ...state.baseDataStoreSingle,
   }
 }
 

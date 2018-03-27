@@ -50,6 +50,14 @@ const baseDataProductCategoryParentTreeOptions = (state = {}, action) => {
   }
 }
 
+const baseDataStoreOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('BASEDATA_STORE_OPTIONS') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+
 
 export default {
   accessControlPostOptions,
@@ -57,5 +65,6 @@ export default {
   accessControlAuthorityParentTreeOptions,
   accessControlRoleOptions,
   baseDataProductCategoryParentOptions,
-  baseDataProductCategoryParentTreeOptions
+  baseDataProductCategoryParentTreeOptions,
+  baseDataStoreOptions
 }

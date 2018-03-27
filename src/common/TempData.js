@@ -394,7 +394,7 @@ export const availableMenu = [
           {
             key: 'updateemployee',
             title: '更新业务员',
-            url: '/basedata/employee/addemployee'
+            url: '/basedata/employee/updateemployee'
           },
           {
             key: 'employeeDelete'
@@ -727,7 +727,16 @@ export const optionsTempData = {
         value: '3',
         key: 3,
       }],
-    }]
+    }],
+  store: [
+    {
+      value: 1,
+      text: '仓库1',
+    },
+    {
+      value: 2,
+      text: '仓库2',
+    }],
 }
 
 // accessControl
@@ -1102,91 +1111,109 @@ export const supplier = {
   list: [
     {
       key: 1,
-      name: '采购处理',
-      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+      name: '供货商1',
+      code: '111sssssxxx',
+      contactName: '李XX',
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      isPrimary: '是',
+      description: '主要供应XX货物'
     },
     {
       key: 2,
-      name: '采购审核',
-      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
-    },
-    {
-      key: 3,
-      name: '库存处理',
-      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
-    },
-    {
-      key: 4,
-      name: '库存审核',
-      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
-    },
+      name: '供货商2',
+      code: '111sssssxxx',
+      contactName: '李XX',
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      isPrimary: '否',
+      description: '主要供应XX原料'
+    }
   ],
   single: {
-    id: 1,
-    name: '采购处理',
-    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    id: 2,
+    name: '供货商2',
+    code: '111sssssxxx',
+    isPrimary: true,
+    contactName: '李XX',
+    post: '销售经理',
+    cellphone: '1311111111',
+    phone: '331111111',
+    fax: '331111111',
+    email: 'a@q.com',
+    description: '主要供应XX原料'
   }
-
 }
 export const client = {
   list: [
     {
       key: 1,
-      name: '采购处理',
-      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+      name: '客户1',
+      code: '111sssssxxx',
+      contactName: '李XX',
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      isPrimary: '是',
+      description: '主要供应XX货物'
     },
     {
       key: 2,
-      name: '采购审核',
-      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
-    },
-    {
-      key: 3,
-      name: '库存处理',
-      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
-    },
-    {
-      key: 4,
-      name: '库存审核',
-      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
-    },
+      name: '客户2',
+      code: '111sssssxxx',
+      contactName: '李XX',
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      isPrimary: '否',
+      description: '主要供应XX原料'
+    }
   ],
   single: {
-    id: 1,
-    name: '采购处理',
-    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    id: 2,
+    name: '客户2',
+    code: '111sssssxxx',
+    isPrimary: true,
+    contactName: '李XX',
+    post: '采购经理',
+    cellphone: '1311111111',
+    phone: '331111111',
+    fax: '331111111',
+    email: 'a@q.com',
+    description: '主要供应XX原料'
   }
-
 }
 export const employee = {
   list: [
     {
       key: 1,
-      name: '采购处理',
-      description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+      name: '业务员1',
+      code: '111sssssxxx',
+      post: '库存管理员',
+      relatedStores: ['仓库1', '仓库2'],
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      description: '主要供处理库存物资'
     },
     {
       key: 2,
-      name: '采购审核',
-      description: '负责对采购单进行审批，并审核即将入库的采购商品.'
-    },
-    {
-      key: 3,
-      name: '库存处理',
-      description: '负责仓库的物料借出申请，物料归还盘点，加工入库，商品打包和解包等操作'
-    },
-    {
-      key: 4,
-      name: '库存审核',
-      description: '审批物料借出，物料归还，加工入库，库存盘点，移库等操作'
-    },
+      name: '业务员2',
+      code: '111sssssxxx',
+      post: '库存管理员',
+      relatedStores: ['仓库1', '仓库2'],
+      cellphone: '1311111111',
+      email: 'a@q.com',
+      description: '主要供处理库存物资'
+    }
   ],
   single: {
-    id: 1,
-    name: '采购处理',
-    description: '负责采购操作(填写采购申请，采购申报和采购入库)'
+    key: 2,
+    name: '业务员2',
+    code: '111sssssxxx',
+    post: 1,
+    relatedStores: [1, 2],
+    cellphone: '1311111111',
+    email: 'a@q.com',
+    description: '主要供处理库存物资'
   }
-
 }
 
 

@@ -49,6 +49,7 @@ class Add extends Component {
       positionAddvisible: false,
       positionId: undefined,
     }
+    this.props.getStoreSingle()
     this.props.getStorePositionList()
   }
 

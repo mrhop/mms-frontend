@@ -27,7 +27,7 @@ class Index extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_LIST_GOT || type === ActionTypes.BASEDATA_PRODUCTCATEGORY_DELETE_SUCCESS) {
+    if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_LIST_GOT) {
       this.setState({loading: false, data})
     } else if (type === ActionTypes.BASEDATA_PRODUCTCATEGORY_LIST_FAILURE) {
       this.setState({loading: false})

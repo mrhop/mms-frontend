@@ -5,13 +5,14 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin} from 'antd';
+import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin, Select} from 'antd';
+
+const Option = Select.Option;
 
 import {history} from '../../../../redux/index/store'
-import {accessControlActions} from '../../../../redux/index/actions'
+import {baseDataActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
-
 
 class Add extends Component {
   constructor(props) {
@@ -19,15 +20,21 @@ class Add extends Component {
     this.state = {
       loading: false
     }
-    this.props.getPostSingle()
+    this.props.getEmployeeSingle()
+    this.props.getStoreOptions()
+    this.props.getPostOptions()
   }
 
   componentWillReceiveProps(nextProps) {
-    const {type} = nextProps
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_SUCCESS) {
-      history.push('/accesscontrol/post')
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    const {type, data} = nextProps
+    if (type === ActionTypes.BASEDATA_EMPLOYEE_SAVE_SUCCESS) {
+      history.push('/basedata/employee')
+    } else if (type === ActionTypes.BASEDATA_EMPLOYEE_SAVE_FAILURE) {
       this.setState({loading: false})
+    } else if (type === ActionTypes.BASEDATA_STORE_OPTIONS_GOT) {
+      this.setState({storeOptions: data})
+    } else if (type === ActionTypes.ACCESSCONTROL_POST_OPTIONS_GOT) {
+      this.setState({postOptions: data})
     }
   }
 
@@ -35,24 +42,30 @@ class Add extends Component {
     this.props.form.resetFields();
   }
 
-  submitFun = (e)=> {
+  submitFun = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
-        this.props.savePost(values)
+        this.props.saveEmployee(values)
       }
     });
   }
 
   render() {
-    const {loading} = this.state
+    const {loading, storeOptions, postOptions} = this.state
+    let storeOptionsArr = storeOptions && storeOptions.map(function (item) {
+      return <Option key={item.value} value={item.value}>{item.text}</Option>
+    })
+    let postOptionsArr = postOptions && postOptions.map(function (item) {
+      return <Option key={item.value} value={item.value}>{item.text}</Option>
+    })
     const {type} = this.props
     const FormItem = Form.Item
     const {TextArea} = Input;
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_EMPLOYEE_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"
@@ -60,17 +73,69 @@ class Add extends Component {
         showIcon
       />
     }
-    return <Spin style={{width:'100%'}} tip="处理中"
+    return <Spin style={{width: '100%'}} tip="处理中"
                  spinning={loading}>
       {alertMsg}
       <Form onSubmit={this.submitFun}>
-        <FormItem label="职位名称" {...formItemLayout}>
-          {getFieldDecorator('name', {
+        <FormItem label="名称" {...formItemLayout}>
+          {getFieldDecorator('name',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="名称"/>
+          )}
+        </FormItem>
+        <FormItem label="编码" {...formItemLayout}>
+          {getFieldDecorator('code',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="编码"/>
+          )}
+        </FormItem>
+        <FormItem label="职位" {...formItemLayout}>
+          {getFieldDecorator('post', {
             rules: [{
               required: true, message: '必选字段!'
-            }],
+            }]
           })(
-            <Input placeholder="职位名称"/>
+            <Select placeholder="选择职位">
+              {postOptionsArr}
+            </Select>
+          )}
+        </FormItem>
+        <FormItem label="关联仓库" {...formItemLayout}>
+          {getFieldDecorator('relatedStores', {})(
+            <Select mode="multiple" placeholder="选择关联仓库">
+              {storeOptionsArr}
+            </Select>
+          )}
+        </FormItem>
+
+        <FormItem label="邮箱" {...formItemLayout}>
+          {getFieldDecorator('email',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }, {
+                type: 'email', message: '请输入正确的邮箱地址',
+              }],
+            })(
+            <Input placeholder="邮箱" type="email"/>
+          )}
+        </FormItem>
+        <FormItem label="手机" {...formItemLayout}>
+          {getFieldDecorator('cellphone',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="手机"/>
           )}
         </FormItem>
         <FormItem label="详细说明" {...formItemLayout}>
@@ -91,18 +156,25 @@ class Add extends Component {
 Add.propTypes = {
   location: PropTypes.object,
   type: PropTypes.string,
-  savePost: PropTypes.func,
-  getPostSingle: PropTypes.func,
+  data: PropTypes.any,
+  saveEmployee: PropTypes.func,
+  getEmployeeSingle: PropTypes.func,
+  getStoreOptions: PropTypes.func,
+  getPostOptions: PropTypes.func,
   form: PropTypes.object.isRequired,
 }
 
 
 const mapStateToProps = (state) => {
-  return {...state.accessControlPostSingle}
+  return {
+    ...state.baseDataEmployeeSingle,
+    ...state.baseDataStoreOptions,
+    ...state.accessControlPostOptions
+  }
 }
 
 const mapDispatchToProps = {
-  ...accessControlActions
+  ...baseDataActions, ...optionActions
 }
 const AddProxy = connect(
   mapStateToProps,

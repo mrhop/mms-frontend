@@ -162,7 +162,15 @@ export const getStoreSingle = (data) => (dispatch, getState) => {
     setTimeout(function () {
       // 根据时间段，关键条件进行过滤
       console.log('getStoreSingle success')
-      // 此处返回快捷方式的data
+      // 同时处理 store position list
+      const {baseDataStorePositionList} = getState()
+      if (TempData.store.single.positions) {
+        getState().baseDataStorePositionList = {
+          data: TempData.store.single.positions.map(function (value) {
+            return {...value, key: value.id}
+          })
+        }
+      }
       return dispatch(Object.assign(data, {
         type: actionTypes.BASEDATA_STORE_SINGLE_GOT,
         data: TempData.store.single
@@ -210,18 +218,6 @@ export const deleteStore = (data) => (dispatch, getState) => {
 }
 // STORE POSITION
 export const getStorePositionList = (data) => (dispatch, getState) => {
-  if (data && data.storeId) {
-    setTimeout(function () {
-      console.log('getStoreList success')
-      // 此处返回data
-      return dispatch({
-        type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT,
-      })
-    }, 300)
-    return dispatch({
-      type: actionTypes.BASEDATA_STORE_POSITION_LIST_QUERY
-    })
-  }
   return dispatch({
     type: actionTypes.BASEDATA_STORE_POSITION_LIST_GOT
   })
@@ -442,7 +438,7 @@ export const saveEmployee = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('saveEmployee success')
+    console.log('saveEmployee success', data)
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.BASEDATA_EMPLOYEE_SAVE_SUCCESS,

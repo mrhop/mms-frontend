@@ -175,7 +175,14 @@ class Update extends Component {
     const {type} = this.props
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
-    if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_PRODUCT_SINGLE_FAILURE) {
+      alertMsg = <Alert
+        message="获取失败"
+        description="失败原因，后台传回"
+        type="error"
+        showIcon
+      />
+    }else if (type === ActionTypes.BASEDATA_PRODUCT_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"

@@ -5,10 +5,12 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin} from 'antd';
+import {Form, Icon, Input, Button, Row, Col, Alert, message, Spin, Radio} from 'antd';
+
+const RadioGroup = Radio.Group
 
 import {history} from '../../../../redux/index/store'
-import {accessControlActions} from '../../../../redux/index/actions'
+import {baseDataActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 import {formItemLayout, formItemTailLayout} from '../../../../common/FormLayout';
 
@@ -19,14 +21,14 @@ class Add extends Component {
     this.state = {
       loading: false
     }
-    this.props.getPostSingle()
+    this.props.getSupplierSingle()
   }
 
   componentWillReceiveProps(nextProps) {
     const {type} = nextProps
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_SUCCESS) {
-      history.push('/accesscontrol/post')
-    } else if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_SUPPLIER_SAVE_SUCCESS) {
+      history.push('/basedata/supplier')
+    } else if (type === ActionTypes.BASEDATA_SUPPLIER_SAVE_FAILURE) {
       this.setState({loading: false})
     }
   }
@@ -35,12 +37,12 @@ class Add extends Component {
     this.props.form.resetFields();
   }
 
-  submitFun = (e)=> {
+  submitFun = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({loading: true})
-        this.props.savePost(values)
+        this.props.saveSupplier(values)
       }
     });
   }
@@ -52,7 +54,7 @@ class Add extends Component {
     const {TextArea} = Input;
     const {getFieldDecorator} = this.props.form
     let alertMsg = null
-    if (type === ActionTypes.ACCESSCONTROL_POST_SAVE_FAILURE) {
+    if (type === ActionTypes.BASEDATA_SUPPLIER_SAVE_FAILURE) {
       alertMsg = <Alert
         message="保存失败"
         description="失败原因，后台传回"
@@ -60,17 +62,91 @@ class Add extends Component {
         showIcon
       />
     }
-    return <Spin style={{width:'100%'}} tip="处理中"
+    return <Spin style={{width: '100%'}} tip="处理中"
                  spinning={loading}>
       {alertMsg}
       <Form onSubmit={this.submitFun}>
-        <FormItem label="职位名称" {...formItemLayout}>
-          {getFieldDecorator('name', {
+        <FormItem label="名称" {...formItemLayout}>
+          {getFieldDecorator('name',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="名称"/>
+          )}
+        </FormItem>
+        <FormItem label="编码" {...formItemLayout}>
+          {getFieldDecorator('code',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="编码"/>
+          )}
+        </FormItem>
+        <FormItem label="主供货商" {...formItemLayout}>
+          {getFieldDecorator('isPrimary', {
+            initialValue: false,
             rules: [{
               required: true, message: '必选字段!'
-            }],
+            }]
           })(
-            <Input placeholder="职位名称"/>
+            <RadioGroup>
+              <Radio value={true}>是</Radio>
+              <Radio value={false}>否</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+        <FormItem label="联系人" {...formItemLayout}>
+          {getFieldDecorator('contactName',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="联系人"/>
+          )}
+        </FormItem>
+        <FormItem label="联系人职位" {...formItemLayout}>
+          {getFieldDecorator('post',
+            {})(
+            <Input placeholder="联系人职位"/>
+          )}
+        </FormItem>
+        <FormItem label="邮箱" {...formItemLayout}>
+          {getFieldDecorator('email',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }, {
+                type: 'email', message: '请输入正确的邮箱地址',
+              }],
+            })(
+            <Input placeholder="邮箱" type="email"/>
+          )}
+        </FormItem>
+        <FormItem label="手机" {...formItemLayout}>
+          {getFieldDecorator('cellphone',
+            {
+              rules: [{
+                required: true, message: '必选字段!'
+              }],
+            })(
+            <Input placeholder="手机"/>
+          )}
+        </FormItem>
+        <FormItem label="电话" {...formItemLayout}>
+          {getFieldDecorator('phone',
+            {})(
+            <Input placeholder="电话"/>
+          )}
+        </FormItem>
+        <FormItem label="传真" {...formItemLayout}>
+          {getFieldDecorator('fax',
+            {})(
+            <Input placeholder="传真"/>
           )}
         </FormItem>
         <FormItem label="详细说明" {...formItemLayout}>
@@ -91,18 +167,18 @@ class Add extends Component {
 Add.propTypes = {
   location: PropTypes.object,
   type: PropTypes.string,
-  savePost: PropTypes.func,
-  getPostSingle: PropTypes.func,
+  saveSupplier: PropTypes.func,
+  getSupplierSingle: PropTypes.func,
   form: PropTypes.object.isRequired,
 }
 
 
 const mapStateToProps = (state) => {
-  return {...state.accessControlPostSingle}
+  return {...state.baseDataSupplierSingle}
 }
 
 const mapDispatchToProps = {
-  ...accessControlActions
+  ...baseDataActions
 }
 const AddProxy = connect(
   mapStateToProps,
