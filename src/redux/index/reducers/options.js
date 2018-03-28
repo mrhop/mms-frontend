@@ -58,6 +58,22 @@ const baseDataStoreOptions = (state = {}, action) => {
   }
 }
 
+const baseDataSupplierOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('BASEDATA_SUPPLIER_OPTIONS') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+
+const baseDataEmployeeOptions = (state = {}, action) => {
+  if (action && action.type && action.type.indexOf('BASEDATA_EMPLOYEE_OPTIONS') > -1) {
+    return Object.assign(state, action)
+  } else {
+    return {}
+  }
+}
+
 
 export default {
   accessControlPostOptions,
@@ -66,5 +82,7 @@ export default {
   accessControlRoleOptions,
   baseDataProductCategoryParentOptions,
   baseDataProductCategoryParentTreeOptions,
-  baseDataStoreOptions
+  baseDataStoreOptions,
+  baseDataSupplierOptions,
+  baseDataEmployeeOptions,
 }

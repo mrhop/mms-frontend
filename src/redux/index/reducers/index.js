@@ -4,9 +4,10 @@ import loginInfo from './loginInfo'
 import leftMenu from './leftMenu'
 import indexData from './indexData'
 import options from './options'
-import accessControlData from './accessControl'
-import systemInfoData from './systemInfo'
-import baseDataData from './baseData'
+import accessControl from './accessControl'
+import systemInfo from './systemInfo'
+import baseData from './baseData'
+import purchase from "./purchase";
 
 const indexApp = {
   locationChange,
@@ -15,9 +16,10 @@ const indexApp = {
   leftMenu,
   indexData,
   ...options,
-  ...accessControlData,
-  ...systemInfoData,
-  ...baseDataData
+  ...accessControl,
+  ...systemInfo,
+  ...baseData,
+  ...purchase
 }
 
 export default indexApp

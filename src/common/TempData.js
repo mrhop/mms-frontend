@@ -130,6 +130,49 @@ export const leftMenu = [
       }
     ]
   },
+  {
+    key: 'purchase',
+    title: '采购管理',
+    icon: 'shopping-cart',
+    url: '/purchase',
+    children: [
+      {
+        key: 'purchaseapplication',
+        title: '采购申请',
+        url: '/purchase/purchaseapplication',
+      },
+      {
+        key: 'purchaseaudit',
+        title: '采购审核',
+        url: '/purchase/purchaseaudit'
+      },
+      {
+        key: 'purchaseloading',
+        title: '采购入库',
+        url: '/purchase/purchaseloading',
+      },
+      {
+        key: 'purchasereturnapplication',
+        title: '退货申请',
+        url: '/purchase/purchasereturnapplication',
+      },
+      {
+        key: 'purchasereturnaudit',
+        title: '退货审核',
+        url: '/purchase/purchasereturnaudit'
+      },
+      {
+        key: 'purchasereturn',
+        title: '退货出库',
+        url: '/purchase/purchasereturn',
+      },
+      {
+        key: 'purchasefiled',
+        title: '归档查询',
+        url: '/purchase/purchasefiled'
+      }
+    ]
+  }
 ]
 export const availableMenu = [
   {
@@ -400,6 +443,108 @@ export const availableMenu = [
             key: 'employeeDelete'
           },
         ]
+      }
+    ]
+  },
+  {
+    key: 'purchase',
+    title: '采购管理',
+    url: '/purchase',
+    children: [
+      {
+        key: 'purchaseapplication',
+        title: '采购申请',
+        url: '/purchase/purchaseapplication',
+        children: [
+          {
+            key: 'addpurchaseapplication',
+            title: '新增申请单',
+            url: '/purchase/purchaseapplication/addpurchaseapplication'
+          },
+          {
+            key: 'updatepurchaseapplication',
+            title: '更新申请单',
+            url: '/purchase/purchaseapplication/updatepurchaseapplication'
+          },
+          {
+            key: 'purchaseapplicationDelete'
+          },
+        ]
+      },
+      {
+        key: 'purchaseaudit',
+        title: '采购审核',
+        url: '/purchase/purchaseaudit'
+      },
+      {
+        key: 'purchaseloading',
+        title: '采购入库',
+        url: '/purchase/purchaseloading',
+        children: [
+          {
+            key: 'addpurchaseloading',
+            title: '新增入库单',
+            url: '/purchase/purchaseloading/addpurchaseloading'
+          },
+          {
+            key: 'updatepurchaseloading',
+            title: '更新入库单',
+            url: '/purchase/purchaseloading/updatepurchaseloading'
+          },
+          {
+            key: 'purchaseloadingDelete'
+          },
+        ]
+      },
+      {
+        key: 'purchasereturnapplication',
+        title: '退货申请',
+        url: '/purchase/purchasereturnapplication',
+        children: [
+          {
+            key: 'addpurchasereturnapplication',
+            title: '新增申请单',
+            url: '/purchase/purchasereturnapplication/addpurchasereturnapplication'
+          },
+          {
+            key: 'updatepurchasereturnapplication',
+            title: '更新申请单',
+            url: '/purchase/purchasereturnapplication/updatepurchasereturnapplication'
+          },
+          {
+            key: 'purchasereturnapplicationDelete'
+          },
+        ]
+      },
+      {
+        key: 'purchasereturnaudit',
+        title: '退货审核',
+        url: '/purchase/purchasereturnaudit'
+      },
+      {
+        key: 'purchasereturn',
+        title: '退货出库',
+        url: '/purchase/purchasereturn',
+        children: [
+          {
+            key: 'addpurchasereturn',
+            title: '新增出库单',
+            url: '/purchase/purchasereturn/addpurchasereturn'
+          },
+          {
+            key: 'updatepurchasereturn',
+            title: '更新出库单',
+            url: '/purchase/purchasereturn/updatepurchasereturn'
+          },
+          {
+            key: 'purchaseReturnDelete'
+          },
+        ]
+      },
+      {
+        key: 'purchasefiled',
+        title: '归档查询',
+        url: '/purchase/purchasefiled'
       }
     ]
   }
@@ -736,6 +881,24 @@ export const optionsTempData = {
     {
       value: 2,
       text: '仓库2',
+    }],
+  supplier: [
+    {
+      value: 1,
+      text: '供货商1',
+    },
+    {
+      value: 2,
+      text: '供货商2',
+    }],
+  employee: [
+    {
+      value: 1,
+      text: '业务员1',
+    },
+    {
+      value: 2,
+      text: '业务员2',
     }],
 }
 

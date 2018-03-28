@@ -47,6 +47,26 @@ import  StoreUpdate from '../../components/index/baseData/store/Update'
 import  Supplier from '../../components/index/baseData/supplier'
 import  SupplierAdd from '../../components/index/baseData/supplier/Add'
 import  SupplierUpdate from '../../components/index/baseData/supplier/Update'
+
+// PURCHASE
+import  Purchase from '../../components/index/purchase'
+import  PurchaseApplication from '../../components/index/purchase/purchaseApplication'
+import  AddPurchaseApplication from '../../components/index/purchase/purchaseApplication/Add'
+import  UpdatePurchaseApplication from '../../components/index/purchase/purchaseApplication/Update'
+import  PurchaseLoading from '../../components/index/purchase/purchaseLoading'
+import  AddPurchaseLoading from '../../components/index/purchase/purchaseLoading/Add'
+import  UpdatePurchaseLoading from '../../components/index/purchase/purchaseLoading/Update'
+import  PurchaseReturn from '../../components/index/purchase/purchaseReturn'
+import  AddPurchaseReturn from '../../components/index/purchase/purchaseReturn/Add'
+import  UpdatePurchaseReturn from '../../components/index/purchase/purchaseReturn/Update'
+import  PurchaseReturnApplication from '../../components/index/purchase/purchaseReturnApplication'
+import  AddPurchaseReturnApplication from '../../components/index/purchase/purchaseReturnApplication/Add'
+import  UpdatePurchaseReturnApplication from '../../components/index/purchase/purchaseReturnApplication/Update'
+import  PurchaseAudit from '../../components/index/purchase/PurchaseAudit'
+import  PurchaseReturnAudit from '../../components/index/purchase/PurchaseReturnAudit'
+import  PurchaseFiled from '../../components/index/purchase/PurchaseFiled'
+
+
 export default [
   {
     path: "/",
@@ -222,6 +242,72 @@ export default [
         path: "/basedata/supplier/updatesupplier",
         component: SupplierUpdate
       }
+    ]
+  },
+  {
+    path: "/purchase",
+    component: Purchase,
+    routes: [
+      {
+        path: "/purchase/purchaseapplication",
+        component: PurchaseApplication
+      },
+      {
+        path: "/purchase/purchaseapplication/addpurchaseapplication",
+        component: AddPurchaseApplication
+      },
+      {
+        path: "/purchase/purchaseapplication/updatepurchaseapplication",
+        component: UpdatePurchaseApplication
+      },
+      {
+        path: "/purchase/purchaseaudit",
+        component: PurchaseAudit
+      },
+      {
+        path: "/purchase/purchaseloading",
+        component: PurchaseLoading
+      },
+      {
+        path: "/purchase/purchaseloading/addpurchaseloading",
+        component: AddPurchaseLoading
+      },
+      {
+        path: "/purchase/purchaseloading/updatepurchaseloading",
+        component: UpdatePurchaseLoading
+      },
+      {
+        path: "/purchase/purchasereturnapplication",
+        component: PurchaseReturnApplication
+      },
+      {
+        path: "/purchase/purchasereturnapplication/addpurchasereturnapplication",
+        component: AddPurchaseReturnApplication
+      },
+      {
+        path: "/purchase/purchasereturnapplication/updatepurchasereturnapplication",
+        component: UpdatePurchaseReturnApplication
+      },
+      {
+        path: "/purchase/purchasereturnaudit",
+        component: PurchaseReturnAudit
+      },
+      {
+        path: "/purchase/purchasereturn",
+        component: PurchaseReturn
+      },
+      {
+        path: "/purchase/purchasereturn/addpurchasereturn",
+        component: AddPurchaseReturn
+      },
+      {
+        path: "/purchase/purchasereturn/updatepurchasereturn",
+        component: UpdatePurchaseReturn
+      },
+      {
+        path: "/purchase/purchasefiled",
+        component: PurchaseFiled
+      },
     ]
   },
 ];

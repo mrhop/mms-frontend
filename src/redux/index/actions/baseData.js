@@ -264,7 +264,7 @@ export const getSupplierList = (data) => (dispatch, getState) => {
   // to server
   setTimeout(function () {
     // 根据时间段，关键条件进行过滤
-    console.log('getSupplierList success')
+    console.log('getSupplierList success', data)
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.BASEDATA_SUPPLIER_LIST_GOT,

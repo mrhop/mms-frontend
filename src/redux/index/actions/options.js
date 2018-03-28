@@ -95,3 +95,29 @@ export const getStoreOptions = (data) => (dispatch, getState) => {
     })
   }, 300)
 }
+
+export const getSupplierOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getSupplierOptions option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.BASEDATA_SUPPLIER_OPTIONS_GOT,
+      data: TempData.optionsTempData.supplier
+    })
+  }, 300)
+}
+
+export const getEmployeeOptions = (data) => (dispatch, getState) => {
+  // to server
+  setTimeout(function () {
+    // 根据时间段，关键条件进行过滤
+    console.log('getEmployeeOptions option success')
+    // 此处返回快捷方式的data
+    return dispatch({
+      type: actionTypes.BASEDATA_EMPLOYEE_OPTIONS_GOT,
+      data: TempData.optionsTempData.employee
+    })
+  }, 300)
+}
