@@ -12,7 +12,7 @@ export const getPurchaseApplicationList = (data) => (dispatch, getState) => {
     // 此处返回快捷方式的data
     return dispatch({
       type: actionTypes.PUCHASE_PURCHASEAPPLICATION_LIST_GOT,
-      data: TempData.productCategory.list
+      data: TempData.purchaseApplication.list
     })
   }, 300)
   return dispatch({

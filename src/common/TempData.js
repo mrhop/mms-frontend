@@ -1379,5 +1379,87 @@ export const employee = {
   }
 }
 
+// purchase
+export const purchaseApplication = {
+  list: [
+    {
+      key: 1,
+      name: '采购申请单1',
+      code: '11azzz2',
+      applyUser: 'abc',
+      date: 1521188897000,
+      estimateCostPrice: 1.33,
+      supplier: 'aaabc',
+      status: 0,
+      description: [
+        {
+          date: 1521188897000,
+          comment: '申请继续物资'
+        }
+      ]
+    },
+    {
+      key: 2,
+      name: '采购申请单2',
+      code: '11azzz21',
+      applyUser: 'abc1',
+      date: 1521188897000,
+      estimateCostPrice: 1.33,
+      supplier: 'aaabc',
+      status: 1,
+      description: [
+        {
+          date: 1521188897000,
+          comment: '申请继续物资'
+        },
+        {
+          date: 1521188997000,
+          comment: '申请成功'
+        }
+      ]
+    },
+    {
+      key: 3,
+      name: '采购申请单3',
+      code: '11azzz213',
+      applyUser: 'abc13',
+      date: 1521188897000,
+      estimateCostPrice: 1.33,
+      supplier: 'aaabc1',
+      status: 2,
+      description: [
+        {
+          date: 1521188897000,
+          comment: '申请继续物资'
+        },
+        {
+          date: 1521188997000,
+          comment: '申请失败，修改XX商品，然后继续申请'
+        }]
+    },
+  ],
+  single:
+    {
+      key: 3,
+      name: '采购申请单3',
+      code: '11azzz213',
+      applyUser: 1,
+      date: 1521188897000,
+      estimateCostPrice: 1.33,
+      supplier: 2,
+      description: [
+        {
+          date: 1521188897000,
+          comment: '申请继续物资'
+        },
+        {
+          date: 1521188997000,
+          comment: '申请失败，修改XX商品，然后继续申请'
+        }]
+    }
+
+}
+
+
 
 

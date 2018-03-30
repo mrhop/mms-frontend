@@ -8,6 +8,8 @@ import PropTypes from 'prop-types'
 
 import {Link} from 'react-router-dom'
 
+import moment from 'moment'
+
 import {Table, Spin, Divider, Modal, Button, Input, Icon, DatePicker} from 'antd';
 
 const confirm = Modal.confirm
@@ -16,7 +18,7 @@ const infoalert = Modal.info
 import Print from 'rc-print';
 
 
-import {baseDataActions, optionActions} from '../../../../redux/index/actions'
+import {purchaseActions, optionActions} from '../../../../redux/index/actions'
 import * as ActionTypes from '../../../../redux/index/actions/ActionTypes'
 
 
@@ -30,7 +32,7 @@ class Index extends Component {
       searchText: '',
       tableCondition: {pagination: {defaultPageSize: 10, current: 1, pageSize: 10}, filters: {}}
     }
-    this.props.getSupplierList()
+    this.props.getPurchaseApplicationList()
     this.props.getSupplierOptions()
     this.props.getEmployeeOptions()
   }
@@ -38,17 +40,17 @@ class Index extends Component {
 
   componentWillReceiveProps(nextProps) {
     const {type, data} = nextProps
-    if (type === ActionTypes.BASEDATA_SUPPLIER_LIST_GOT) {
+    if (type === ActionTypes.PUCHASE_PURCHASEAPPLICATION_LIST_GOT) {
       this.setState({loading: false, data})
-    } else if (type === ActionTypes.BASEDATA_SUPPLIER_LIST_FAILURE) {
+    } else if (type === ActionTypes.PUCHASE_PURCHASEAPPLICATION_LIST_FAILURE) {
       this.setState({loading: false})
-    } else if (type === ActionTypes.BASEDATA_SUPPLIER_DELETE_BEGIN || type === ActionTypes.BASEDATA_SUPPLIER_LIST_QUERY) {
+    } else if (type === ActionTypes.PUCHASE_PURCHASEAPPLICATION_DELETE_BEGIN || type === ActionTypes.PUCHASE_PURCHASEAPPLICATION_LIST_QUERY) {
       this.setState({loading: true})
-    } else if (type === ActionTypes.BASEDATA_SUPPLIER_DELETE_SUCCESS) {
-      this.props.getSupplierList(this.state.tableCondition)
-    }else if (type === ActionTypes.BASEDATA_SUPPLIER_OPTIONS_GOT) {
+    } else if (type === ActionTypes.PUCHASE_PURCHASEAPPLICATION_DELETE_SUCCESS) {
+      this.props.getPurchaseApplicationList(this.state.tableCondition)
+    } else if (type === ActionTypes.BASEDATA_SUPPLIER_OPTIONS_GOT) {
       this.setState({supplierOptions: data})
-    }else if (type === ActionTypes.BASEDATA_EMPLOYEE_OPTIONS_GOT) {
+    } else if (type === ActionTypes.BASEDATA_EMPLOYEE_OPTIONS_GOT) {
       this.setState({employeeOptions: data})
     }
   }
@@ -60,7 +62,7 @@ class Index extends Component {
       okType: 'danger',
       maskClosable: true,
       onOk: (() => {
-        this.props.deleteSupplier(id)
+        this.props.deletePurchaseApplication(id)
       }).bind(this),
       onCancel() {
         console.log('Cancel');
@@ -76,7 +78,7 @@ class Index extends Component {
     if (searchDate) {
       filters.date = searchDate
     }
-    this.props.getSupplierList({pagination, filters})
+    this.props.getPurchaseApplicationList({pagination, filters})
     this.setState({
       tableCondition: {pagination, filters}
     })
@@ -98,7 +100,7 @@ class Index extends Component {
       filtered: !!searchText,
       tableCondition
     });
-    this.props.getSupplierList(tableCondition)
+    this.props.getPurchaseApplicationList(tableCondition)
   }
   onDateSearch = (date) => {
     this.setState({searchDate: date});
@@ -113,7 +115,7 @@ class Index extends Component {
       datefiltered: !!date,
       tableCondition
     });
-    this.props.getSupplierList(tableCondition)
+    this.props.getPurchaseApplicationList(tableCondition)
   }
 
   doPrint(id) {
@@ -125,7 +127,7 @@ class Index extends Component {
 
 // 删除给出alert msg，确认后，再进行删除
   render() {
-    const {loading, data,supplierOptions,employeeOptions} = this.state;
+    const {loading, data, supplierOptions, employeeOptions} = this.state;
     const columns = [
       {
         title: '名称',
@@ -178,7 +180,10 @@ class Index extends Component {
           this.setState({
             filterDateDropdownVisible: visible,
           });
-        }
+        },
+        render: (text, record) => (
+          moment(text).format("YYYY-MM-DD HH:mm")
+        )
       },
       {
         title: '预计成本（￥）',
@@ -196,26 +201,35 @@ class Index extends Component {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
+        render: (text, record) => (
+          text === 0 ? '审核中' : (text === 1 ? '审核完成' : '审核驳回')
+        )
       },
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
-          <span>
+        render: (text, record) => {
+          if (record.status !== 1)
+            return <span>
             <Link to="#" onClick={this.doPrint.bind(this, record.key)}>打印采购申请</Link>
-            <Divider type="vertical"/>
-            <Link to={{
-              pathname: '/basedata/supplier/updatesupplier',
-              state: {id: record.key}
-            }}>修改</Link>
+              <Divider type="vertical"/>
+              <Link to={{
+                pathname: '/purchase/purchaseapplication/updatepurchaseapplication',
+                state: {id: record.key}
+              }}>修改</Link>
             <Divider type="vertical"/>
             <Link to="#" onClick={this.showDeleteConfirm.bind(this, record.key)}>删除</Link>
             </span>
-        )
+          else {
+            return <span>
+            <Link to="#" onClick={this.doPrint.bind(this, record.key)}>打印采购申请</Link>
+            </span>
+          }
+        }
       }]
     return <Fragment>
       <div className="actions"><Link className="button"
-                                     to="/basedata/supplier/addsupplier"><span>新增供货商</span></Link></div>
+                                     to="/purchase/purchaseapplication/addpurchaseapplication"><span>新增采购申请</span></Link></div>
       <hr/>
       <div className="lists">
         <Spin style={{width: '100%'}} tip="处理中"
@@ -223,7 +237,15 @@ class Index extends Component {
           <Table pagination={{defaultPageSize: 10}} columns={columns}
                  dataSource={data}
                  onChange={this.onChange}
-                 expandedRowRender={record => <p style={{margin: 0}}>{record.description}</p>}
+                 expandedRowRender={record => {
+                   const a = record.description && record.description.map(
+                     function (value, index) {
+                       return <p key={index} style={{margin: 0}}>{
+                         moment(value.date).format("YYYY-MM-DD HH:mm") + ' ' +
+                         value.comment}</p>
+                     })
+                   return a
+                 }}
           />
         </Spin>
       </div>
@@ -246,23 +268,22 @@ class Index extends Component {
 Index.propTypes = {
   type: PropTypes.string,
   data: PropTypes.array,
-  getSupplierList: PropTypes.func,
-  deleteSupplier: PropTypes.func,
+  getPurchaseApplicationList: PropTypes.func,
+  deletePurchaseApplication: PropTypes.func,
   getSupplierOptions: PropTypes.func,
   getEmployeeOptions: PropTypes.func,
-
 }
 
 const mapStateToProps = (state) => {
   return {
-    ...state.baseDataSupplierList,
+    ...state.purchaseApplicationList,
     ...state.baseDataSupplierOptions,
     ...state.baseDataEmployeeOptions
   }
 }
 
 const mapDispatchToProps = {
-  ...baseDataActions,
+  ...purchaseActions,
   ...optionActions
 }
 const IndexProxy = connect(
