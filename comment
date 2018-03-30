@@ -12,4 +12,4 @@ npm --registry https://registry.npm.taobao.org install -g node-sass
 
 2. product/Add.jsx code的自动生成处理  salePrice销售价 根据默认浮动的成本价的自动修改处理
 
-3. 采购申请部分需要给出comment的工作链，也就是descriptions的工作链
+3. 采购申请部分更新采购单部分，在description下面给出comments链条
